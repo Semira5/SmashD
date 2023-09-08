@@ -55,4 +55,27 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	TArray<class UInputAction*> inputActions;
+
+private:
+	void RightTriggerDown();
+	void RightTriggerUp();
+	void RightGripDown();
+	void RightGripUp();
+	void RightADown();
+	void RightAUp();
+	void RightBDown();
+	void RightBUp();
+
+	void LeftTriggerDown();
+	void LeftTriggerUp();
+	void LeftGripDown();
+	void LeftGripUp();
+
+	void CanPlayingDrums();
+
+	bool bRightTriggerDown = false;
+	bool bRightGripDown = false;
+	bool bLeftTriggerDown = false;
+	bool bLeftGripDown = false;
+
 };
