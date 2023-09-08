@@ -2,6 +2,8 @@
 
 
 #include "OSY_NodeFactory.h"
+#include "OSY_NodeActor.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AOSY_NodeFactory::AOSY_NodeFactory()
@@ -23,5 +25,35 @@ void AOSY_NodeFactory::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	UE_LOG(LogTemp,Warning,TEXT("DeltaTime : %f"),DeltaTime);
+	// DeltaTime =  0.016667f;
+	// BPM 192에서 1박은 0.3125f;
+	// 시간이 흘렀으니까
+	currentTime+= DeltaTime;
+	//생성할거야
+	UE_LOG(LogTemp,Warning,TEXT("CurrentTime : %f"),currentTime);
+	// 1마디----마디별로 8로 나눠라
+	// 마디별로 8로 나누면됨
+	if (currentTime >= 0.3125f && (currentTime - DeltaTime) < 0.3125f)
+	{
+		spawnNode();
+	}
+	// 2마디----마디별로 8로 나눠라
+	if (currentTime >= 0.625f && (currentTime - DeltaTime) < 0.625f)
+	{
+		spawnNode();
+	}
+	
+	
+
+
+}
+
+void AOSY_NodeFactory::spawnNode()
+{
+	// 생성위치
+	FVector FactoryLoc = GetActorLocation();
+
+	GetWorld()->SpawnActor<AOSY_NodeActor>(NodeFactory,FactoryLoc,FRotator::ZeroRotator);
 }
 
