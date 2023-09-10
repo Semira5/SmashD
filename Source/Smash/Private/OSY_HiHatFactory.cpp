@@ -3,6 +3,7 @@
 
 #include "OSY_HiHatFactory.h"
 #include "OSY_NodeActor.h"
+#include "OSY_HiHatNodeActor.h"
 
 // Sets default values
 AOSY_HiHatFactory::AOSY_HiHatFactory()
@@ -1119,6 +1120,6 @@ void AOSY_HiHatFactory::spawnHiHatNode()
 	// 생성위치
 	FVector FactoryLoc = GetActorLocation();
 
-	GetWorld()->SpawnActor<AOSY_NodeActor>(NodeFactory, FactoryLoc, FRotator::ZeroRotator);
+	GetWorld()->SpawnActor<AOSY_HiHatNodeActor>(NodeFactory, FactoryLoc, FRotator::ZeroRotator);
 }
 

@@ -23,7 +23,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UPROPERTY(EditAnywhere, Category="MySettings")
-	TSubclassOf<class AOSY_NodeActor> NodeFactory;
+	TSubclassOf<class AOSY_CrashNodeActor> NodeFactory;
 
 	// 노드 스폰하는 함수
 	void spawnCrashNode();

@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "OSY_HiHatFactory.generated.h"
+#include "OSY_NodeDestroyZone.generated.h"
 
 UCLASS()
-class SMASH_API AOSY_HiHatFactory : public AActor
+class SMASH_API AOSY_NodeDestroyZone : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AOSY_HiHatFactory();
+	AOSY_NodeDestroyZone();
 
 protected:
 	// Called when the game starts or when spawned
@@ -23,12 +23,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, Category="MySettings")
-	TSubclassOf<class AOSY_HiHatNodeActor> NodeFactory;
 
-	// 노드 스폰하는 함수
-	void spawnHiHatNode();
+	// 필요속성 : 박스 충돌체
+	UPROPERTY(VisibleAnywhere)
+	class UBoxComponent* boxComp;
 
-	// 현재 시간
-	float currentTime = 0;
+	UFUNCTION()
+	void OnComponentBeginOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

@@ -3,6 +3,7 @@
 
 #include "OSY_SnareFactory.h"
 #include "OSY_NodeActor.h"
+#include "OSY_SnareNodeActor.h"
 
 // Sets default values
 AOSY_SnareFactory::AOSY_SnareFactory()
@@ -1775,7 +1776,7 @@ void AOSY_SnareFactory::spawnSnareNode()
 	// 생성위치
 	FVector FactoryLoc = GetActorLocation();
 
-	GetWorld()->SpawnActor<AOSY_NodeActor>(NodeFactory, FactoryLoc, FRotator::ZeroRotator);
+	GetWorld()->SpawnActor<AOSY_SnareNodeActor>(NodeFactory, FactoryLoc, FRotator::ZeroRotator);
 
 }
 
