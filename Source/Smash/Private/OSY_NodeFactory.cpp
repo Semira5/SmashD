@@ -26,14 +26,9 @@ void AOSY_NodeFactory::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	UE_LOG(LogTemp,Warning,TEXT("DeltaTime : %f"),DeltaTime);
-	// DeltaTime =  0.016667f;
-	// BPM 192에서 1박은 0.3125f;
-	// 시간이 흘렀으니까
 	currentTime+= DeltaTime;
 	//생성할거야
 	UE_LOG(LogTemp,Warning,TEXT("CurrentTime : %f"),currentTime);
-	// 1마디----마디별로 8로 나눠라
-	// 마디별로 8로 나누면됨
 	if (currentTime >= 0.3125f && (currentTime - DeltaTime) < 0.3125f)
 	{
 		spawnNode();
