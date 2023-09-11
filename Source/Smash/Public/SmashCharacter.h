@@ -55,6 +55,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	TArray<class UInputAction*> inputActions;
+	//Áøµ¿(ÇÝÆ½)È¿°ú Ãß°¡
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	class UHapticFeedbackEffect_Base* smash_Haptic;
 
 private:
 	void RightTriggerDown();
@@ -70,8 +73,9 @@ private:
 	void LeftTriggerUp();
 	void LeftGripDown();
 	void LeftGripUp();
-
-	void CanPlayingDrums();
+	
+	void CanPlayingDrumsLeft();
+	void CanPlayingDrumsRight();
 
 	bool bRightTriggerDown = false;
 	bool bRightGripDown = false;
