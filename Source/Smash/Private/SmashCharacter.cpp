@@ -113,28 +113,28 @@ void ASmashCharacter::RightTriggerDown()
 {
 	//rightLog->SetText(FText::FromString("Right Trigger Down!"));
 	bRightTriggerDown = true;
-	CanPlayingDrums();
+	CanPlayingDrumsRight();
 }
 
 void ASmashCharacter::RightTriggerUp()
 {
 	//rightLog->SetText(FText::FromString("Right Trigger Up!"));
 	bRightTriggerDown = false;
-	CanPlayingDrums();
+	CanPlayingDrumsRight();
 }
 
 void ASmashCharacter::RightGripDown()
 {
 	//rightLog->SetText(FText::FromString("Right Grip Down!"));
 	bRightGripDown = true;
-	CanPlayingDrums();
+	CanPlayingDrumsRight();
 }
 
 void ASmashCharacter::RightGripUp()
 {
 	//rightLog->SetText(FText::FromString("Right Grip Up!"));
 	bRightGripDown = false;
-	CanPlayingDrums();
+	CanPlayingDrumsRight();
 }
 
 
@@ -164,41 +164,63 @@ void ASmashCharacter::RightBUp()
 void ASmashCharacter::LeftTriggerDown()
 {
     bLeftTriggerDown = true;
-	CanPlayingDrums();
+	CanPlayingDrumsLeft();
 }
 
 void ASmashCharacter::LeftTriggerUp()
 {
 	bLeftTriggerDown = false;
-	CanPlayingDrums();
+	CanPlayingDrumsLeft();
 }
 
 void ASmashCharacter::LeftGripDown()
 {
     bLeftGripDown = true;
-	CanPlayingDrums();
+	CanPlayingDrumsLeft();
 }
 
 void ASmashCharacter::LeftGripUp()
 {
 	bLeftGripDown = false;
-	CanPlayingDrums();
+	CanPlayingDrumsLeft();
 }
 
-void ASmashCharacter::CanPlayingDrums()
+void ASmashCharacter::CanPlayingDrumsLeft()
 {
-	if (bRightTriggerDown && bRightGripDown && bLeftTriggerDown && bLeftGripDown)
+	if (bLeftTriggerDown && bLeftGripDown)
 	{
+		APlayerController* pc = GetController<APlayerController>();
+
+		leftLog->SetText(FText::FromString("Can Playing Drum"));
+
+		//햅틱 이벤트(드럼 콜리젼 추가되면 조건식 추가하기)
+		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
+	}
+	else
+	{
+		leftLog->SetText(FText::FromString("Cant Playing Drum"));
+	}
+}
+
+void ASmashCharacter::CanPlayingDrumsRight()
+{
+	if (bRightTriggerDown && bRightGripDown)
+	{
+		APlayerController* pc = GetController<APlayerController>();
+
 		//드럼 콜리젼과 연결 -> 연주
 		rightLog->SetText(FText::FromString("Can Playing Drum"));
-		leftLog->SetText(FText::FromString("Can Playing Drum"));
+
+		//햅틱 이벤트(드럼 콜리젼 추가되면 조건식 추가하기)
+		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 	}
 	else
 	{
 		rightLog->SetText(FText::FromString("Cant Playing Drum"));
-		leftLog->SetText(FText::FromString("Cant Playing Drum"));
 	}
 }
+
+
 
 
 
