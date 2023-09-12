@@ -61,15 +61,6 @@ void AOSY_CrashNodeActor::Tick(float DeltaTime)
 
 		// 시간 업데이트
 		CurrentLerpTime += DeltaTime;
-		if (CurrentLerpTime > TotalLerpTime)
-		{
-			direction = Target->GetActorLocation()-GetActorLocation();
-			FVector p0= GetActorLocation();
-			FVector vt = direction*speed*DeltaTime;
-			FVector p= p0+vt;
-			SetActorLocation(p);
-		}
-
 	}
 
 
