@@ -41,4 +41,10 @@ public:
 
 	UFUNCTION()
 	void OnComponentBeginOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+
+	FVector StartLocation;
+	FVector TargetLocation;
+	float CurrentLerpTime = 0.0f;
+	float TotalLerpTime = 2.0f; // 목표 시간 (초) 설정 (여기서는 2초)
 };

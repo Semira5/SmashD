@@ -26,7 +26,19 @@ void AOSY_TomFactory::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	currentTime += DeltaTime;
+	UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
 
+	TArray<float> spawnTimes =
+	{ 10.625f,56.875f,56.953125f,57.03125f,144.6875f,144.765625f };
+
+	for (float spawnTime : spawnTimes)
+	{
+		if (currentTime >= spawnTime && currentTime - DeltaTime < spawnTime)
+		{
+			spawnTomhNode();
+		}
+	}
+/*
 #pragma region 9
 	if (currentTime >= 10.3802 && (currentTime - DeltaTime) < 10.3802)
 	{
@@ -57,7 +69,7 @@ void AOSY_TomFactory::Tick(float DeltaTime)
 		spawnTomhNode();
 	}
 #pragma endregion 116
-
+*/
 }
 
 void AOSY_TomFactory::spawnTomhNode()

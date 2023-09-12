@@ -38,7 +38,8 @@ void AOSY_CrashNodeActor::BeginPlay()
 
 	if (Target != nullptr)
 	{
-		direction = Target->GetActorLocation() - GetActorLocation();
+		StartLocation = GetActorLocation();
+		TargetLocation = Target->GetActorLocation();
 	}
 	
 }
@@ -48,10 +49,17 @@ void AOSY_CrashNodeActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector P0 = GetActorLocation();
-	FVector vt = direction * speed * DeltaTime;
-	FVector P = P0 + vt;
-	SetActorLocation(P);
+	if (CurrentLerpTime < TotalLerpTime)
+	{
+		// Lerp 함수를 사용하여 현재 위치를 새 위치로 보간
+		FVector NewLocation = FMath::Lerp(StartLocation, TargetLocation, CurrentLerpTime / TotalLerpTime);
+
+		// 새 위치로 이동
+		SetActorLocation(NewLocation);
+
+		// 시간 업데이트
+		CurrentLerpTime += DeltaTime;
+	}
 
 }
 
