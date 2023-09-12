@@ -29,7 +29,7 @@ void AOSY_TomFactory::Tick(float DeltaTime)
 	UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
 
 	TArray<float> spawnTimes =
-	{ 10.625f,56.875f,56.953125f,57.03125f,144.6875f,144.765625f };
+	{ 8.625f,54.875f,54.953125f,55.03125f,142.6875f,142.765625f };
 
 	for (float spawnTime : spawnTimes)
 	{

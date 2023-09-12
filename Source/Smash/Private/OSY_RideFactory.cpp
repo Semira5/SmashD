@@ -29,7 +29,7 @@ void AOSY_RideFactory::Tick(float DeltaTime)
 	UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
 
 	TArray<float> spawnTimes =
-	{ 57.1875f,129.375f,130.625f,131.875f};
+	{ 55.1875f,127.375f,128.625f,129.875f};
 
 	for (float spawnTime : spawnTimes)
 	{
