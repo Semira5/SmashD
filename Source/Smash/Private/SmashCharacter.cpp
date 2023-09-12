@@ -68,7 +68,7 @@ ASmashCharacter::ASmashCharacter()
 	rightcomp = CreateDefaultSubobject<UBoxComponent>(TEXT("rightcompBox"));
 	rightcomp->SetupAttachment(rightStick);
 	rightcomp->SetRelativeLocation(FVector(110.0f, 55.0f, -90.0f));;
-	rightcomp->SetRelativeScale3D(FVector(0.7f, 0.7f, 0.7f));
+	rightcomp->SetRelativeScale3D(FVector(10.0f, 10.0f, 10.0f));
 }
 
 // Called when the game starts or when spawned
@@ -161,8 +161,8 @@ void ASmashCharacter::RightADown()
 {
 	rightLog->SetText(FText::FromString("Right A Button Down!"));
 
-	// 사용자가 바라보고 있는 방향을 정면으로 다시 정렬(회전, 위치)
-	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
+// 	사용자가 바라보고 있는 방향을 정면으로 다시 정렬(회전, 위치)
+// 		UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
 
 void ASmashCharacter::RightAUp()
@@ -251,12 +251,13 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(UPrimitiveComponent* Overlappe
 
 		//햅틱 이벤트(드럼 콜리젼 추가되면 조건식 추가하기)
 		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
+		leftLog->SetText(FText::FromString("PlayHaptic"));
 	}
 }
 //오른쪽 충돌 이벤트
 void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (bCanUseRightStick)
+	if (bCanUseRightStick == true)
 	{
 		APlayerController* pc = GetController<APlayerController>();
 		AOSY_CrashNodeActor* CrashNodeActor = Cast<AOSY_CrashNodeActor>(OtherActor);
@@ -273,6 +274,7 @@ void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* Overlapp
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
 			OtherActor->Destroy();
+			rightLog->SetText(FText::FromString("Overlap Chrash"));
 		}
 
 		if (HiHatNodeActor)
