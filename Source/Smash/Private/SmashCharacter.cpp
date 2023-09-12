@@ -271,6 +271,8 @@ void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* Overlapp
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), CrashSound, GetActorLocation());
 
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+
+			OtherActor->Destroy();
 		}
 
 		if (HiHatNodeActor)
@@ -279,6 +281,8 @@ void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* Overlapp
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), HiHatSound, GetActorLocation());
 
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+
+			OtherActor->Destroy();
 		}
 
 		if (RideNodeActor)
@@ -287,6 +291,8 @@ void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* Overlapp
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), RideSound, GetActorLocation());
 
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+			OtherActor->Destroy();
+
 		}
 
 		if (SnarNodeActor)
@@ -295,6 +301,8 @@ void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* Overlapp
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), SnarSound, GetActorLocation());
 
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+
+			OtherActor->Destroy();
 		}
 
 		if (TomNodeActor)
@@ -303,6 +311,8 @@ void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* Overlapp
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), TomSound, GetActorLocation());
 
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+
+			OtherActor->Destroy();
 		}
 	}
 }
