@@ -12,6 +12,10 @@
 #include "EnhancedInputComponent.h"
 #include "Components/BoxComponent.h"
 #include "OSY_CrashNodeActor.h"
+#include "OSY_HiHatNodeActor.h"
+#include "OSY_RideNodeActor.h"
+#include "OSY_SnareNodeActor.h"
+#include "OSY_TomNodeActor.h"
 #include <Kismet/GameplayStatics.h>
 
 // Sets default values
@@ -254,15 +258,50 @@ void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* Overlapp
 {
 	if (bCanUseRightStick)
 	{
+		APlayerController* pc = GetController<APlayerController>();
 		AOSY_CrashNodeActor* CrashNodeActor = Cast<AOSY_CrashNodeActor>(OtherActor);
+		AOSY_HiHatNodeActor* HiHatNodeActor = Cast<AOSY_HiHatNodeActor>(OtherActor);
+		AOSY_RideNodeActor* RideNodeActor = Cast<AOSY_RideNodeActor>(OtherActor);
+		AOSY_SnareNodeActor* SnarNodeActor = Cast<AOSY_SnareNodeActor>(OtherActor);
+		AOSY_TomNodeActor* TomNodeActor = Cast<AOSY_TomNodeActor>(OtherActor);
+		 
 		if (CrashNodeActor)
 		{
-			APlayerController* pc = GetController<APlayerController>();
+			//Chash사운드 플레이
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), CrashSound, GetActorLocation());
 
-			//사운드 플레이
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExSound, GetActorLocation());
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+		}
 
-			//햅틱 이벤트(드럼 콜리젼 추가되면 조건식 추가하기)
+		if (HiHatNodeActor)
+		{
+			//HiHat사운드 플레이
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), HiHatSound, GetActorLocation());
+
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+		}
+
+		if (RideNodeActor)
+		{
+			//Ride사운드 플레이
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), RideSound, GetActorLocation());
+
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+		}
+
+		if (SnarNodeActor)
+		{
+			//Snar사운드 플레이
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), SnarSound, GetActorLocation());
+
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+		}
+
+		if (TomNodeActor)
+		{
+			//Tom사운드 플레이
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), TomSound, GetActorLocation());
+
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 		}
 	}

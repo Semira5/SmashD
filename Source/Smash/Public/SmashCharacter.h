@@ -63,8 +63,20 @@ public:
 	UPROPERTY(EditAnywhere,Category="MySettings")
 	class UBoxComponent* leftcomp;
 
-	UPROPERTY(EditDefaultsOnly, Category = "MySettings")
-	class USoundBase* ExSound;
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class USoundBase* CrashSound;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class USoundBase* HiHatSound;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class USoundBase* RideSound;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class USoundBase* SnarSound;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class USoundBase* TomSound;
 
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	TArray<class UInputAction*> inputActions;
