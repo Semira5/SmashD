@@ -26,6 +26,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION()
+	void OnComponentLeftBeginOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnComponentRightBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 	UPROPERTY(EditAnywhere, Category="MySettings|Components")
 	class UCameraComponent* hmdCam;
 
@@ -53,11 +57,33 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	class UInputMappingContext* imc_VRmap;
 
+	UPROPERTY(EditAnywhere,Category="MySettings")
+	class UBoxComponent* rightcomp;
+	
+	UPROPERTY(EditAnywhere,Category="MySettings")
+	class UBoxComponent* leftcomp;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class USoundBase* CrashSound;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class USoundBase* HiHatSound;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class USoundBase* RideSound;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class USoundBase* SnarSound;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class USoundBase* TomSound;
+
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	TArray<class UInputAction*> inputActions;
 	//Áøµ¿(ÇÝÆ½)È¿°ú Ãß°¡
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	class UHapticFeedbackEffect_Base* smash_Haptic;
+
 
 private:
 	void RightTriggerDown();
@@ -81,5 +107,6 @@ private:
 	bool bRightGripDown = false;
 	bool bLeftTriggerDown = false;
 	bool bLeftGripDown = false;
-
+	bool bCanUseLeftStick = false;
+	bool bCanUseRightStick = false;
 };

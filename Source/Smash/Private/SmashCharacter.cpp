@@ -10,11 +10,18 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Components/BoxComponent.h"
+#include "OSY_CrashNodeActor.h"
+#include "OSY_HiHatNodeActor.h"
+#include "OSY_RideNodeActor.h"
+#include "OSY_SnareNodeActor.h"
+#include "OSY_TomNodeActor.h"
+#include <Kismet/GameplayStatics.h>
 
 // Sets default values
 ASmashCharacter::ASmashCharacter()
 {
- 
+
 	PrimaryActorTick.bCanEverTick = true;
 
 	hmdCam = CreateDefaultSubobject<UCameraComponent>(TEXT("HMD Camera"));
@@ -53,13 +60,22 @@ ASmashCharacter::ASmashCharacter()
 	rightLog->SetHorizontalAlignment(EHTA_Center);
 	rightLog->SetVerticalAlignment(EVRTA_TextCenter);
 
+	leftcomp = CreateDefaultSubobject<UBoxComponent>(TEXT("leftcompBox"));
+	leftcomp->SetupAttachment(leftStick);
+	leftcomp->SetRelativeLocation(FVector(110.0f, 55.0f, -90.0f));
+	leftcomp->SetRelativeScale3D(FVector(0.7f, 0.7f, 0.7f));
+
+	rightcomp = CreateDefaultSubobject<UBoxComponent>(TEXT("rightcompBox"));
+	rightcomp->SetupAttachment(rightStick);
+	rightcomp->SetRelativeLocation(FVector(110.0f, 55.0f, -90.0f));;
+	rightcomp->SetRelativeScale3D(FVector(0.7f, 0.7f, 0.7f));
 }
 
 // Called when the game starts or when spawned
 void ASmashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	leftLog->SetText(FText::FromString("1"));
 	rightLog->SetText(FText::FromString("2"));
 
@@ -108,6 +124,9 @@ void ASmashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		enhancedInputComponent->BindAction(inputActions[5], ETriggerEvent::Completed, this, &ASmashCharacter::LeftGripUp);
 	}
 }
+
+
+
 //
 void ASmashCharacter::RightTriggerDown()
 {
@@ -163,7 +182,7 @@ void ASmashCharacter::RightBUp()
 
 void ASmashCharacter::LeftTriggerDown()
 {
-    bLeftTriggerDown = true;
+	bLeftTriggerDown = true;
 	CanPlayingDrumsLeft();
 }
 
@@ -175,7 +194,7 @@ void ASmashCharacter::LeftTriggerUp()
 
 void ASmashCharacter::LeftGripDown()
 {
-    bLeftGripDown = true;
+	bLeftGripDown = true;
 	CanPlayingDrumsLeft();
 }
 
@@ -195,6 +214,8 @@ void ASmashCharacter::CanPlayingDrumsLeft()
 
 		//햅틱 이벤트(드럼 콜리젼 추가되면 조건식 추가하기)
 		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
+
+		bCanUseLeftStick = true;
 	}
 	else
 	{
@@ -213,10 +234,76 @@ void ASmashCharacter::CanPlayingDrumsRight()
 
 		//햅틱 이벤트(드럼 콜리젼 추가되면 조건식 추가하기)
 		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+
+		bCanUseRightStick = true;
 	}
 	else
 	{
 		rightLog->SetText(FText::FromString("Cant Playing Drum"));
+	}
+}
+//왼쪽 충돌 이벤트
+void ASmashCharacter::OnComponentLeftBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (bCanUseLeftStick)
+	{
+		APlayerController* pc = GetController<APlayerController>();
+
+		//햅틱 이벤트(드럼 콜리젼 추가되면 조건식 추가하기)
+		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
+	}
+}
+//오른쪽 충돌 이벤트
+void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (bCanUseRightStick)
+	{
+		APlayerController* pc = GetController<APlayerController>();
+		AOSY_CrashNodeActor* CrashNodeActor = Cast<AOSY_CrashNodeActor>(OtherActor);
+		AOSY_HiHatNodeActor* HiHatNodeActor = Cast<AOSY_HiHatNodeActor>(OtherActor);
+		AOSY_RideNodeActor* RideNodeActor = Cast<AOSY_RideNodeActor>(OtherActor);
+		AOSY_SnareNodeActor* SnarNodeActor = Cast<AOSY_SnareNodeActor>(OtherActor);
+		AOSY_TomNodeActor* TomNodeActor = Cast<AOSY_TomNodeActor>(OtherActor);
+		 
+		if (CrashNodeActor)
+		{
+			//Chash사운드 플레이
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), CrashSound, GetActorLocation());
+
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+		}
+
+		if (HiHatNodeActor)
+		{
+			//HiHat사운드 플레이
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), HiHatSound, GetActorLocation());
+
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+		}
+
+		if (RideNodeActor)
+		{
+			//Ride사운드 플레이
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), RideSound, GetActorLocation());
+
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+		}
+
+		if (SnarNodeActor)
+		{
+			//Snar사운드 플레이
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), SnarSound, GetActorLocation());
+
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+		}
+
+		if (TomNodeActor)
+		{
+			//Tom사운드 플레이
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), TomSound, GetActorLocation());
+
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+		}
 	}
 }
 
