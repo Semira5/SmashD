@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include <Kismet/GameplayStatics.h>
 #include "OSY_TomNodeEndActor.h"
+#include "SmashCharacter.h"
 
 // Sets default values
 AOSY_TomNodeActor::AOSY_TomNodeActor()
@@ -34,6 +35,8 @@ void AOSY_TomNodeActor::BeginPlay()
 	Super::BeginPlay();
 
 	Target = Cast<AOSY_TomNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_TomNodeEndActor::StaticClass()));
+
+	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_TomNodeActor::OnComponentBeginOverlap);
 
 	if (Target != nullptr)
 	{
@@ -65,6 +68,6 @@ void AOSY_TomNodeActor::Tick(float DeltaTime)
 
 void AOSY_TomNodeActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	
 }
 

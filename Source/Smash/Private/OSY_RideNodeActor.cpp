@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include <Kismet/GameplayStatics.h>
 #include "OSY_RideNodeEndActor.h"
+#include "SmashCharacter.h"
 
 // Sets default values
 AOSY_RideNodeActor::AOSY_RideNodeActor()
@@ -34,6 +35,8 @@ void AOSY_RideNodeActor::BeginPlay()
 	Super::BeginPlay();
 
 	Target = Cast<AOSY_RideNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_RideNodeEndActor::StaticClass()));
+
+	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_RideNodeActor::OnComponentBeginOverlap);
 
 	if (Target != nullptr)
 	{
@@ -65,6 +68,6 @@ void AOSY_RideNodeActor::Tick(float DeltaTime)
 
 void AOSY_RideNodeActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	
 }
 

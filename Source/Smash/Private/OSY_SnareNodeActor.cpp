@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include <Kismet/GameplayStatics.h>
 #include "OSY_SnareNodeEndActor.h"
+#include "SmashCharacter.h"
 
 // Sets default values
 AOSY_SnareNodeActor::AOSY_SnareNodeActor()
@@ -35,6 +36,8 @@ void AOSY_SnareNodeActor::BeginPlay()
 
 	Target = Cast<AOSY_SnareNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_SnareNodeEndActor::StaticClass()));
 
+	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_SnareNodeActor::OnComponentBeginOverlap);
+
 	if (Target != nullptr)
 	{
 		StartLocation = GetActorLocation();
@@ -64,6 +67,6 @@ void AOSY_SnareNodeActor::Tick(float DeltaTime)
 
 void AOSY_SnareNodeActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	
 }
 

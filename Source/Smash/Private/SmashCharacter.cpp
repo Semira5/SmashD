@@ -24,6 +24,8 @@ ASmashCharacter::ASmashCharacter()
 
 	PrimaryActorTick.bCanEverTick = true;
 
+	bCanUseRightStick = true;
+
 	hmdCam = CreateDefaultSubobject<UCameraComponent>(TEXT("HMD Camera"));
 	hmdCam->SetupAttachment(RootComponent);
 
@@ -75,6 +77,7 @@ ASmashCharacter::ASmashCharacter()
 void ASmashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 
 	rightcomp->OnComponentBeginOverlap.AddDynamic(this, &ASmashCharacter::OnComponentRightBeginOverlap);
 	leftcomp->OnComponentBeginOverlap.AddDynamic(this, &ASmashCharacter::OnComponentLeftBeginOverlap);
@@ -244,6 +247,7 @@ void ASmashCharacter::CanPlayingDrumsRight()
 		rightLog->SetText(FText::FromString("Cant Playing Drum"));
 	}
 }
+
 //왼쪽 충돌 이벤트
 void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -256,6 +260,7 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 		leftLog->SetText(FText::FromString("PlayHaptic"));
 	}
 }
+
 //오른쪽 충돌 이벤트
 void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {

@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include <Kismet/GameplayStatics.h>
 #include "OSY_HiHatNodeEndActor.h"
+#include "SmashCharacter.h"
 
 // Sets default values
 AOSY_HiHatNodeActor::AOSY_HiHatNodeActor()
@@ -34,6 +35,8 @@ void AOSY_HiHatNodeActor::BeginPlay()
 	Super::BeginPlay();
 
 	Target = Cast<AOSY_HiHatNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_HiHatNodeEndActor::StaticClass()));
+
+	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_HiHatNodeActor::OnComponentBeginOverlap);
 
 	if (Target != nullptr)
 	{
@@ -65,6 +68,6 @@ void AOSY_HiHatNodeActor::Tick(float DeltaTime)
 
 void AOSY_HiHatNodeActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	
 }
 
