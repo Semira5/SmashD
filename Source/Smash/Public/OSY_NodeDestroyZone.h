@@ -27,7 +27,13 @@ public:
 	// 필요속성 : 박스 충돌체
 	UPROPERTY(VisibleAnywhere)
 	class UBoxComponent* boxComp;
+	UPROPERTY(VisibleAnywhere)
+	bool isOverlap = true;
 
 	UFUNCTION()
 	void OnComponentBeginOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	float current = 0;
+
+
 };

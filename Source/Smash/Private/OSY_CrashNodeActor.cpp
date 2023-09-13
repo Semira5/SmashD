@@ -54,8 +54,8 @@ void AOSY_CrashNodeActor::Tick(float DeltaTime)
 
 	FVector NewLocation;
 
-	if (CurrentLerpTime < TotalLerpTime)
-	{
+	//if (CurrentLerpTime < TotalLerpTime)
+	//{
 		// Lerp 함수를 사용하여 현재 위치를 새 위치로 보간
 		NewLocation = FMath::Lerp(StartLocation, TargetLocation, CurrentLerpTime / TotalLerpTime);
 
@@ -64,7 +64,7 @@ void AOSY_CrashNodeActor::Tick(float DeltaTime)
 
 		// 시간 업데이트
 		CurrentLerpTime += DeltaTime;
-	}
+	//}
 
 
 }

@@ -26,16 +26,16 @@ void AOSY_RideFactory::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	currentTime += DeltaTime;
-	UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
+	//UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
 
 	TArray<float> spawnTimes =
-	{ 55.1875f};
+	{ 53.34375f};
 
 	for (float spawnTime : spawnTimes)
 	{
 		if (currentTime >= spawnTime && currentTime - DeltaTime < spawnTime)
 		{
-			spawnRidehNode();
+			//spawnRidehNode();
 		}
 	}
 	/*
