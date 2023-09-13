@@ -26,16 +26,17 @@ void AOSY_TomFactory::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	currentTime += DeltaTime;
-	UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
+	//UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
 
 	TArray<float> spawnTimes =
-	{ 8.625f,18.3125f,54.875f,54.953125f,55.03125f,95.5f,95.65625f,95.8125f,96.125f,96.4375f,96.59375f,142.84375f,142.921875f	};
+	{ 7.09375f,16.46875f,53.03125f,53.109375f,53.1875f,93.65625f,93.8125f,93.96875f,94.28125f,94.59375f,94.75f,141.f,141.078125f
+	};
 
 	for (float spawnTime : spawnTimes)
 	{
 		if (currentTime >= spawnTime && currentTime - DeltaTime < spawnTime)
 		{
-			spawnTomhNode();
+			//spawnTomhNode();
 		}
 	}
 /*

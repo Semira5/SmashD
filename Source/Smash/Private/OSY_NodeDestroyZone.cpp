@@ -30,13 +30,23 @@ void AOSY_NodeDestroyZone::BeginPlay()
 void AOSY_NodeDestroyZone::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	
+	current += DeltaTime;
+	if (isOverlap != true)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("current : %f"), current);
+		isOverlap = true;
+	}
 
 	
 }
 
 void AOSY_NodeDestroyZone::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp,Warning,TEXT("Overlap"));
+
+	isOverlap= false;
+	//UE_LOG(LogTemp,Warning,TEXT("Overlap"));
 	OtherActor->Destroy();
 
 }
