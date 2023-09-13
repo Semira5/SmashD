@@ -76,6 +76,9 @@ void ASmashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	rightcomp->OnComponentBeginOverlap.AddDynamic(this, &ASmashCharacter::OnComponentRightBeginOverlap);
+	leftcomp->OnComponentBeginOverlap.AddDynamic(this, &ASmashCharacter::OnComponentLeftBeginOverlap);
+
 	leftLog->SetText(FText::FromString("1"));
 	rightLog->SetText(FText::FromString("2"));
 
@@ -127,7 +130,6 @@ void ASmashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 
 
-//
 void ASmashCharacter::RightTriggerDown()
 {
 	//rightLog->SetText(FText::FromString("Right Trigger Down!"));
@@ -243,7 +245,7 @@ void ASmashCharacter::CanPlayingDrumsRight()
 	}
 }
 //왼쪽 충돌 이벤트
-void ASmashCharacter::OnComponentLeftBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (bCanUseLeftStick)
 	{
@@ -255,10 +257,11 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(UPrimitiveComponent* Overlappe
 	}
 }
 //오른쪽 충돌 이벤트
-void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (bCanUseRightStick == true)
-	{
+	//if (bCanUseRightStick == true)
+	//{
+	    rightLog->SetText(FText::FromString("Collision!!"));
 		APlayerController* pc = GetController<APlayerController>();
 		AOSY_CrashNodeActor* CrashNodeActor = Cast<AOSY_CrashNodeActor>(OtherActor);
 		AOSY_HiHatNodeActor* HiHatNodeActor = Cast<AOSY_HiHatNodeActor>(OtherActor);
@@ -316,7 +319,7 @@ void ASmashCharacter::OnComponentRightBeginOverlap(UPrimitiveComponent* Overlapp
 
 			OtherActor->Destroy();
 		}
-	}
+	//}
 }
 
 
