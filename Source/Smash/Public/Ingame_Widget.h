@@ -13,5 +13,17 @@ UCLASS()
 class SMASH_API UIngame_Widget : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+    UPROPERTY(EditDefaultsOnly, Category="MySettings", meta=(BindWidget))
+	class UButton* btn_PlayGame;
+
+protected:
+	virtual void NativeConstruct() override;
+
+private:
+    UFUNCTION()
+	void PlayGame();
+
 	
 };

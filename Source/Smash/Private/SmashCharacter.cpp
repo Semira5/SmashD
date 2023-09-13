@@ -17,6 +17,8 @@
 #include "OSY_SnareNodeActor.h"
 #include "OSY_TomNodeActor.h"
 #include <Kismet/GameplayStatics.h>
+#include "Components/WidgetInteractionComponent.h"
+#include "WidgetPointerComponent.h"
 
 // Sets default values
 ASmashCharacter::ASmashCharacter()
@@ -71,6 +73,13 @@ ASmashCharacter::ASmashCharacter()
 	rightcomp->SetupAttachment(rightStick);
 	rightcomp->SetRelativeLocation(FVector(110.0f, 55.0f, -90.0f));;
 	rightcomp->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
+
+	//위젯
+	rightWidgetPointer = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("Right Widget Pointer"));
+	rightWidgetPointer->SetupAttachment(rightStick);
+	rightWidgetPointer->SetRelativeLocation(FVector(55.0f, 56.0f, -90.0f));
+
+	widgetPointerComp = CreateDefaultSubobject<UWidgetPointerComponent>(TEXT("Widget Pointer Component"));
 }
 
 // Called when the game starts or when spawned
@@ -128,6 +137,8 @@ void ASmashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		enhancedInputComponent->BindAction(inputActions[4], ETriggerEvent::Completed, this, &ASmashCharacter::LeftTriggerUp);
 		enhancedInputComponent->BindAction(inputActions[5], ETriggerEvent::Started, this, &ASmashCharacter::LeftGripDown);
 		enhancedInputComponent->BindAction(inputActions[5], ETriggerEvent::Completed, this, &ASmashCharacter::LeftGripUp);
+
+		widgetPointerComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
 	}
 }
 
@@ -217,9 +228,6 @@ void ASmashCharacter::CanPlayingDrumsLeft()
 
 		leftLog->SetText(FText::FromString("Can Playing Drum"));
 
-		//햅틱 이벤트(드럼 콜리젼 추가되면 조건식 추가하기)
-		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
-
 		bCanUseLeftStick = true;
 	}
 	else
@@ -237,9 +245,6 @@ void ASmashCharacter::CanPlayingDrumsRight()
 		//드럼 콜리젼과 연결 -> 연주
 		rightLog->SetText(FText::FromString("Can Playing Drum"));
 
-		//햅틱 이벤트(드럼 콜리젼 추가되면 조건식 추가하기)
-		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
-
 		bCanUseRightStick = true;
 	}
 	else
@@ -251,6 +256,8 @@ void ASmashCharacter::CanPlayingDrumsRight()
 //왼쪽 충돌 이벤트
 void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+    if(bCanUseLeftStick)
+	{ 
 	leftLog->SetText(FText::FromString("Collision!!"));
 	APlayerController* pc = GetController<APlayerController>();
 	AOSY_CrashNodeActor* CrashNodeActor = Cast<AOSY_CrashNodeActor>(OtherActor);
@@ -308,14 +315,15 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
 
 		OtherActor->Destroy();
+		}
 	}
 }
 
 //오른쪽 충돌 이벤트
 void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//if (bCanUseRightStick == true)
-	//{
+	if (bCanUseRightStick)
+	{
 	    rightLog->SetText(FText::FromString("Collision!!"));
 		APlayerController* pc = GetController<APlayerController>();
 		AOSY_CrashNodeActor* CrashNodeActor = Cast<AOSY_CrashNodeActor>(OtherActor);
@@ -332,7 +340,6 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
 			OtherActor->Destroy();
-			rightLog->SetText(FText::FromString("Overlap Chrash"));
 		}
 
 		if (HiHatNodeActor)
@@ -374,7 +381,7 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 
 			OtherActor->Destroy();
 		}
-	//}
+	}
 }
 
 

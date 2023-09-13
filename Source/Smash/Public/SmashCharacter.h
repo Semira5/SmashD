@@ -80,6 +80,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="MySettings")
 	class USoundBase* TomSound;
 
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class UWidgetInteractionComponent* rightWidgetPointer;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class UWidgetPointerComponent* widgetPointerComp;
+
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	TArray<class UInputAction*> inputActions;
 	//Áøµ¿(ÇÝÆ½)È¿°ú Ãß°¡
