@@ -11,11 +11,15 @@ ASmashAudience::ASmashAudience()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	rootComp = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
+	SetRootComponent(rootComp);
+
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	meshComp->SetupAttachment(RootComponent);
+	meshComp->SetupAttachment(rootComp);
 	meshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	meshComp->SetRelativeScale3D(FVector(0.1f, 0.1f, 0.6f));
-	SetRootComponent(meshComp);
+	
+	
 }
 
 // Called when the game starts or when spawned
@@ -27,7 +31,7 @@ void ASmashAudience::BeginPlay()
 	meshComp->SetMaterial(0, audMat);
 
 	audMat->SetVectorParameterValue(FName("AudColor"), (FVector4)baseColor);
-	audMat->SetScalarParameterValue(FName("Intensity"), 20);
+	audMat->SetScalarParameterValue(FName("Intensity"), 5);
 }
 
 // Called every frame

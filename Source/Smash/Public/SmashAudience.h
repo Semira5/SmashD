@@ -22,10 +22,25 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	UPROPERTY(EditDefaultsOnly, Category="MySettings|Components")
+	class USceneComponent* rootComp;
 
 	UPROPERTY(EditDefaultsOnly, Category="MySettings")
 	class UStaticMeshComponent* meshComp;
 
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class UStaticMeshComponent* meshComp2;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class UStaticMeshComponent* meshComp3;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class UStaticMeshComponent* meshComp4;
+
+	UPROPERTY(EditDefaultsOnly, Category="MySettings")
+	class UStaticMeshComponent* meshComp5;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "MySettings")
 	FLinearColor baseColor;
 
