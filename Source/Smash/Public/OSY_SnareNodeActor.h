@@ -48,4 +48,8 @@ public:
 	float CurrentLerpTime = 0.0f;
 	float TotalLerpTime = 2.0f; // 목표 시간 (초) 설정 (여기서는 2초)
 
+	
+	void ActiveNode(const FVector& FactoryLoc, bool isActivation);
+
+	bool isHidden = true;
 };

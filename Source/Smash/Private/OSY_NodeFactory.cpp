@@ -25,20 +25,18 @@ void AOSY_NodeFactory::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	UE_LOG(LogTemp,Warning,TEXT("DeltaTime : %f"),DeltaTime);
-	currentTime+= DeltaTime;
-	//생성할거야
-	UE_LOG(LogTemp,Warning,TEXT("CurrentTime : %f"),currentTime);
-	if (currentTime >= 0.3125f && (currentTime - DeltaTime) < 0.3125f)
+	currentTime += DeltaTime;
+	//UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
+
+
+	for (float spawnTime : spawnTimes)
 	{
-		spawnNode();
+		if (currentTime >= spawnTime && currentTime - DeltaTime < spawnTime)
+		{
+			//spawnNode();
+			UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
+		}
 	}
-	// 2마디----마디별로 8로 나눠라
-	if (currentTime >= 0.625f && (currentTime - DeltaTime) < 0.625f)
-	{
-		spawnNode();
-	}
-	
 	
 
 

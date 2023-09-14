@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include <Kismet/GameplayStatics.h>
 #include "OSY_NodeEndActor.h"
+#include "OSY_NodeDestroyZone.h"
 
 // Sets default values
 AOSY_NodeActor::AOSY_NodeActor()
@@ -38,9 +39,9 @@ void AOSY_NodeActor::BeginPlay()
 
 	if (Target != nullptr)
 	{
-		direction = Target->GetActorLocation()-GetActorLocation();
+		StartLocation = GetActorLocation();
+		TargetLocation = Target->GetActorLocation();
 	}
-
 
 	
 }
@@ -50,15 +51,33 @@ void AOSY_NodeActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector P0 = GetActorLocation();
-	FVector vt = direction * speed * DeltaTime;
-	FVector P = P0 + vt;
-	SetActorLocation(P);
+
+	if (CurrentLerpTime < TotalLerpTime)
+	{
+		// Lerp 함수를 사용하여 현재 위치를 새 위치로 보간
+		FVector NewLocation = FMath::Lerp(StartLocation, TargetLocation, CurrentLerpTime / TotalLerpTime);
+
+		// 새 위치로 이동
+		SetActorLocation(NewLocation);
+
+		// 시간 업데이트
+		CurrentLerpTime += DeltaTime;
+	}
 
 }
+
+
 
 void AOSY_NodeActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
+}
+
+void AOSY_NodeActor::ResetNode()
+{
+	// 스네어 노드의 위치 설정 및 표시
+	FVector FactoryLoc = GetActorLocation();
+	SetActorLocation(FactoryLoc);
+	SetActorHiddenInGame(false);
 }
 
