@@ -10,7 +10,7 @@ void UIngame_Widget::NativeConstruct()
     Super::NativeConstruct();
 
     btn_PlayGame->OnClicked.AddDynamic(this, &UIngame_Widget::PlayGame);
-    /*PlayAnimationForward(FadeOut);*/
+    PlayAnimationForward(FadeOut);
 }
 
 void UIngame_Widget::PlayGame()
