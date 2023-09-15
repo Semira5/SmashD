@@ -18,6 +18,9 @@ public:
     UPROPERTY(EditDefaultsOnly, Category="MySettings", meta=(BindWidget))
 	class UButton* btn_PlayGame;
 
+	UPROPERTY(VisibleAnywhere, Transient, meta = (BindWidgetAnim), Category = Menu)
+	class UWidgetAnimation* FadeOut;
+
 protected:
 	virtual void NativeConstruct() override;
 

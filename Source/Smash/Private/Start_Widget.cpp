@@ -25,7 +25,7 @@ void UStart_Widget::StartClassicMode()
             FString LevelName = TEXT("PlayMap");
             UGameplayStatics::OpenLevel(this, FName(LevelName));
         }
-    ), 1.0f, false);
+    ), 2.0f, false);
     }
 }
 
