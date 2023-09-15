@@ -3,10 +3,12 @@
 
 #include "OSY_Level.h"
 #include "Kismet/GameplayStatics.h"
+#include "Ingame_Widget.h"
 
 AOSY_Level::AOSY_Level()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
 }
 
 void AOSY_Level::BeginPlay()
@@ -14,6 +16,13 @@ void AOSY_Level::BeginPlay()
 	Super::BeginPlay();
 
 	playMusic();
+
+	TSubclassOf<UIngame_Widget> WidgetClass = UIngame_Widget::StaticClass();
+	UIngame_Widget* IngameWidget = CreateWidget<UIngame_Widget>(GetWorld(), WidgetClass);
+	if (IngameWidget)
+	{
+		IngameWidget->AddToViewport();
+	}
 
 	//FTimerHandle handle;
 	//GetWorldTimerManager().SetTimer(handle, this, &AOSY_Level::playMusic, 2.f, false);
