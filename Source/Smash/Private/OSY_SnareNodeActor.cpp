@@ -82,7 +82,6 @@ void AOSY_SnareNodeActor::ActiveNode(const FVector& FactoryLoc, bool isActivatio
 		// 스네어 노드의 위치 설정 및 표시
 		StartLocation = FactoryLoc;
 		SetActorLocation(StartLocation);
-		//SetActorHiddenInGame(false);
 		compMesh->SetVisibility(true);
 		CurrentLerpTime = 0;
 		isHidden = false;
@@ -92,7 +91,6 @@ void AOSY_SnareNodeActor::ActiveNode(const FVector& FactoryLoc, bool isActivatio
 	else
 	{
 		isHidden = true;
-		//SetActorHiddenInGame(true);
 		compMesh->SetVisibility(false);
 
 		compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);

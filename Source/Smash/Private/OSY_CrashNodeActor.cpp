@@ -52,19 +52,20 @@ void AOSY_CrashNodeActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector NewLocation;
-
-	//if (CurrentLerpTime < TotalLerpTime)
+	if (isHidden)
 	{
-		// Lerp 함수를 사용하여 현재 위치를 새 위치로 보간
-		NewLocation = FMath::Lerp(StartLocation, TargetLocation, CurrentLerpTime / TotalLerpTime);
-
-		// 새 위치로 이동
-		SetActorLocation(NewLocation);
-
-		// 시간 업데이트
-		CurrentLerpTime += DeltaTime;
+		return;
 	}
+
+	// Lerp 함수를 사용하여 현재 위치를 새 위치로 보간
+	FVector NewLocation = FMath::Lerp(StartLocation, TargetLocation, CurrentLerpTime / TotalLerpTime);
+
+	// 새 위치로 이동
+	SetActorLocation(NewLocation);
+
+	// 시간 업데이트
+	CurrentLerpTime += DeltaTime;
+
 
 
 }
@@ -72,5 +73,30 @@ void AOSY_CrashNodeActor::Tick(float DeltaTime)
 void AOSY_CrashNodeActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
+}
+
+void AOSY_CrashNodeActor::ActiveNode(const FVector& FactoryLoc, bool isActivation)
+{
+	if (isActivation)
+	{
+		// 스네어 노드의 위치 설정 및 표시
+		StartLocation = FactoryLoc;
+		SetActorLocation(StartLocation);
+		//SetActorHiddenInGame(false);
+		compMesh->SetVisibility(true);
+		CurrentLerpTime = 0;
+		isHidden = false;
+		compBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		UE_LOG(LogTemp, Warning, TEXT("make ----------------- %s"), *GetName());
+	}
+	else
+	{
+		isHidden = true;
+		//SetActorHiddenInGame(true);
+		compMesh->SetVisibility(false);
+
+		compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		compMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 }
 

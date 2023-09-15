@@ -11,7 +11,7 @@ AOSY_SnareFactory::AOSY_SnareFactory()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SnarePoolSize=100;
+	SnarePoolSize=20;
 
 }
 
@@ -22,7 +22,9 @@ void AOSY_SnareFactory::BeginPlay()
 
 	for (int32 i = 0; i < SnarePoolSize; i++)
 	{
-		AOSY_SnareNodeActor* SnareNode = GetWorld()->SpawnActor<AOSY_SnareNodeActor>(NodeClass);
+		FActorSpawnParameters param;
+		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		AOSY_SnareNodeActor* SnareNode = GetWorld()->SpawnActor<AOSY_SnareNodeActor>(NodeClass,param);
 		
 		//SnareNode->SetActorHiddenInGame(true);
 		SnareNode->ActiveNode(FVector(), false);
@@ -50,16 +52,7 @@ void AOSY_SnareFactory::Tick(float DeltaTime)
 		spawnSnareNode();
 		currentNodeIndex++;
 	}
-	// -> 노드 생성하자
-	//for (float spawnTime : spawnTimes)
-	//{
-	//	if (currentTime >= spawnTime && currentTime - DeltaTime < spawnTime)
-	//	{
-	//		spawnSnareNode();
-	//		//UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
-	//	}
-	//}
-	//
+
 }
 
 void AOSY_SnareFactory::spawnSnareNode()

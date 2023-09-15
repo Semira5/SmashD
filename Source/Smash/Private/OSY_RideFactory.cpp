@@ -11,12 +11,25 @@ AOSY_RideFactory::AOSY_RideFactory()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	RidePoolSize = 10;
+
 }
 
 // Called when the game starts or when spawned
 void AOSY_RideFactory::BeginPlay()
 {
 	Super::BeginPlay();
+
+	for (int32 i = 0; i < RidePoolSize; i++)
+	{
+		FActorSpawnParameters param;
+		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		AOSY_RideNodeActor* RideNode = GetWorld()->SpawnActor<AOSY_RideNodeActor>(NodeClass,param);
+
+		//SnareNode->SetActorHiddenInGame(true);
+		RideNode->ActiveNode(FVector(), false);
+		RidePool.Add(RideNode);
+	}
 	
 }
 
@@ -25,52 +38,36 @@ void AOSY_RideFactory::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (currentNodeIndex >= spawnTimes.Num())
+	{
+		return;
+	}
 	currentTime += DeltaTime;
 	//UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
 
-	TArray<float> spawnTimes =
-	{ 53.34375f};
-
-	for (float spawnTime : spawnTimes)
+	float spawnTime = spawnTimes[currentNodeIndex];
+	// 만약 현재 시간이 spawnTime 이 됐다면
+	if (currentTime >= spawnTime)
 	{
-		if (currentTime >= spawnTime && currentTime - DeltaTime < spawnTime)
-		{
-			//spawnRidehNode();
-		}
+		spawnRideNode();
+		currentNodeIndex++;
 	}
-	/*
-#pragma region 46
-	if (currentTime >= 55.8699 && (currentTime - DeltaTime) < 55.8699)
-	{
-		spawnRidehNode();
-	}
-#pragma endregion 46
-#pragma region 104
-	if (currentTime >= 126.3942 && (currentTime - DeltaTime) < 126.3942)
-	{
-		spawnRidehNode();
-	}
-#pragma endregion 104
-#pragma region 105
-	if (currentTime >= 127.6154 && (currentTime - DeltaTime) < 127.6154)
-	{
-		spawnRidehNode();
-	}
-#pragma endregion 105
-#pragma region 106
-	if (currentTime >= 128.8366 && (currentTime - DeltaTime) < 128.8366)
-	{
-		spawnRidehNode();
-	}
-#pragma endregion 106
-*/
 }
 
-void AOSY_RideFactory::spawnRidehNode()
+void AOSY_RideFactory::spawnRideNode()
 {
 	// 생성위치
-	FVector FactoryLoc = GetActorLocation();
+	for (AOSY_RideNodeActor* RideNode : RidePool)
+	{
+		if (!RideNode->isHidden)
+		{
+			continue; // 이미 사용 중인 오브젝트는 건너뜀
+		}
 
-	GetWorld()->SpawnActor<AOSY_RideNodeActor>(NodeFactory, FactoryLoc, FRotator::ZeroRotator);
+		RideNode->ActiveNode(GetActorLocation(), true);
+
+
+		break; // 하나의 스네어 노드를 스폰한 후 멈춤
+	}
 }
 

@@ -11,13 +11,26 @@ AOSY_TomFactory::AOSY_TomFactory()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	TomPoolSize = 10;
+
 }
 
 // Called when the game starts or when spawned
 void AOSY_TomFactory::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	for (int32 i = 0; i < TomPoolSize; i++)
+	{
+		FActorSpawnParameters param;
+		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		AOSY_TomNodeActor* TomNode = GetWorld()->SpawnActor<AOSY_TomNodeActor>(NodeClass,param);
+
+		//SnareNode->SetActorHiddenInGame(true);
+		TomNode->ActiveNode(FVector(), false);
+		TomPool.Add(TomNode);
+	}
+
 }
 
 // Called every frame
@@ -25,58 +38,35 @@ void AOSY_TomFactory::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (currentNodeIndex >= spawnTimes.Num())
+	{
+		return;
+	}
 	currentTime += DeltaTime;
 	//UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
 
-	TArray<float> spawnTimes =
-	{ 7.09375f,16.46875f,53.03125f,53.109375f,53.1875f,93.65625f,93.8125f,93.96875f,94.28125f,94.59375f,94.75f,141.f,141.078125f
-	};
-
-	for (float spawnTime : spawnTimes)
+	float spawnTime = spawnTimes[currentNodeIndex];
+	// 만약 현재 시간이 spawnTime 이 됐다면
+	if (currentTime >= spawnTime)
 	{
-		if (currentTime >= spawnTime && currentTime - DeltaTime < spawnTime)
-		{
-			//spawnTomhNode();
-		}
+		spawnTomNode();
+		currentNodeIndex++;
 	}
-/*
-#pragma region 9
-	if (currentTime >= 10.3802 && (currentTime - DeltaTime) < 10.3802)
-	{
-		spawnTomhNode();
-	}
-#pragma endregion 9
-#pragma region 46
-	if (currentTime >= 55.5646 && (currentTime - DeltaTime) < 55.5646)
-	{
-		spawnTomhNode();
-	}
-	if (currentTime >= 55.640925 && (currentTime - DeltaTime) < 55.640925)
-	{
-		spawnTomhNode();
-	}
-	if (currentTime >= 55.71725 && (currentTime - DeltaTime) < 55.71725)
-	{
-		spawnTomhNode();
-	}
-#pragma endregion 46
-#pragma region 116
-	if (currentTime >= 141.3539 && (currentTime - DeltaTime) < 141.3539)
-	{
-		spawnTomhNode();
-	}
-	if (currentTime >= 141.430225 && (currentTime - DeltaTime) < 141.430225)
-	{
-		spawnTomhNode();
-	}
-#pragma endregion 116
-*/
 }
 
-void AOSY_TomFactory::spawnTomhNode()
+void AOSY_TomFactory::spawnTomNode()
 {
-	FVector FactoryLoc = GetActorLocation();
+	// 생성위치
+	for (AOSY_TomNodeActor* TomNode : TomPool)
+	{
+		if (!TomNode->isHidden)
+		{
+			continue; // 이미 사용 중인 오브젝트는 건너뜀
+		}
 
-	GetWorld()->SpawnActor<AOSY_TomNodeActor>(NodeFactory, FactoryLoc, FRotator::ZeroRotator);
+		TomNode->ActiveNode(GetActorLocation(), true);
+
+
+		break; // 하나의 스네어 노드를 스폰한 후 멈춤
+	}
 }
-

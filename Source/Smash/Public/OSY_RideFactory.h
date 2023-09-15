@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "OSY_RideNodeActor.h"
 #include "OSY_RideFactory.generated.h"
 
 UCLASS()
@@ -26,10 +27,28 @@ public:
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	TSubclassOf<class AOSY_RideNodeActor> NodeFactory;
 
+	// 오브젝트 풀을 저장할 배열
+	TArray<AOSY_RideNodeActor*> RidePool;
+
+	//풀사이즈
+	UPROPERTY(EditAnywhere, Category="MySettings")
+	int32 RidePoolSize;
+
+	// 스네어 노드 클래스에 대한 참조
+	UPROPERTY(EditAnywhere, Category="MySettings")
+    TSubclassOf<AOSY_RideNodeActor> NodeClass;
+
+	int currentNodeIndex = 0;
+
 	// 노드 스폰하는 함수
-	void spawnRidehNode();
+	void spawnRideNode();
 
 	// 현재 시간
 	float currentTime = 0;
+
+	TArray<float> spawnTimes =
+	{ 40.008f,138.184f,200.96f,201.904f,202.376f
+
+	};
 
 };
