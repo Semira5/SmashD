@@ -10,7 +10,7 @@ void UStart_Widget::NativeConstruct()
     Super::NativeConstruct();
 
     btn_Classic->OnClicked.AddDynamic(this, &UStart_Widget::StartClassicMode);
-    PlayAnimationForward(Fade);
+    //PlayAnimationForward(Fade);
 }
 
 void UStart_Widget::StartClassicMode()
