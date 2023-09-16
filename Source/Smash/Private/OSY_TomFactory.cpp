@@ -8,10 +8,10 @@
 // Sets default values
 AOSY_TomFactory::AOSY_TomFactory()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	TomPoolSize = 10;
+	TomPoolSize = 20;
 
 }
 
@@ -24,7 +24,7 @@ void AOSY_TomFactory::BeginPlay()
 	{
 		FActorSpawnParameters param;
 		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		AOSY_TomNodeActor* TomNode = GetWorld()->SpawnActor<AOSY_TomNodeActor>(NodeClass,param);
+		AOSY_TomNodeActor* TomNode = GetWorld()->SpawnActor<AOSY_TomNodeActor>(NodeClass, param);
 
 		//SnareNode->SetActorHiddenInGame(true);
 		TomNode->ActiveNode(FVector(), false);
@@ -43,30 +43,29 @@ void AOSY_TomFactory::Tick(float DeltaTime)
 		return;
 	}
 	currentTime += DeltaTime;
-	//UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
 
 	float spawnTime = spawnTimes[currentNodeIndex];
 	// 만약 현재 시간이 spawnTime 이 됐다면
 	if (currentTime >= spawnTime)
 	{
-		spawnTomNode();
+		PoolChangeTN();
 		currentNodeIndex++;
 	}
+
 }
 
-void AOSY_TomFactory::spawnTomNode()
+void AOSY_TomFactory::PoolChangeTN()
 {
-	// 생성위치
+	// 풀에서 사용 가능한 스네어 노드 찾기
 	for (AOSY_TomNodeActor* TomNode : TomPool)
 	{
-		if (!TomNode->isHidden)
-		{
-			continue; // 이미 사용 중인 오브젝트는 건너뜀
-		}
+		// 풀에 0번째에 있는 놈을 활성화를 시킨다.
+		auto ActiveTomNode = TomPool[0];
+		ActiveTomNode->ActiveNode(GetActorLocation(), true);
+		// 풀에서 제거한다.
+		ActiveTomPool.Add(ActiveTomNode);
+		TomPool.RemoveAt(0);
+		break;
 
-		TomNode->ActiveNode(GetActorLocation(), true);
-
-
-		break; // 하나의 스네어 노드를 스폰한 후 멈춤
 	}
 }

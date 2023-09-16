@@ -49,25 +49,24 @@ void AOSY_RideFactory::Tick(float DeltaTime)
 	// 만약 현재 시간이 spawnTime 이 됐다면
 	if (currentTime >= spawnTime)
 	{
-		spawnRideNode();
+		PoolChangeRN();
 		currentNodeIndex++;
 	}
 }
 
-void AOSY_RideFactory::spawnRideNode()
+void AOSY_RideFactory::PoolChangeRN()
 {
-	// 생성위치
+	// 풀에서 사용 가능한 스네어 노드 찾기
 	for (AOSY_RideNodeActor* RideNode : RidePool)
 	{
-		if (!RideNode->isHidden)
-		{
-			continue; // 이미 사용 중인 오브젝트는 건너뜀
-		}
+		// 풀에 0번째에 있는 놈을 활성화를 시킨다.
+		auto ActiveRideNode = RidePool[0];
+		ActiveRideNode->ActiveNode(GetActorLocation(), true);
+		// 풀에서 제거한다.
+		ActiveRidePool.Add(ActiveRideNode);
+		RidePool.RemoveAt(0);
+		break;
 
-		RideNode->ActiveNode(GetActorLocation(), true);
-
-
-		break; // 하나의 스네어 노드를 스폰한 후 멈춤
 	}
 }
 

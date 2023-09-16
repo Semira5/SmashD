@@ -31,6 +31,9 @@ public:
 	// 오브젝트 풀을 저장할 배열
 	TArray<AOSY_SnareNodeActor*> SnarePool;
 
+	// Active노드를 담을 리스트다.
+	TArray<AOSY_SnareNodeActor*> ActiveSnarePool;
+
 	//풀사이즈
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	int32 SnarePoolSize;
@@ -42,7 +45,7 @@ public:
 	int currentNodeIndex = 0;
 
 	// 노드 스폰하는 함수
-	void spawnSnareNode();
+	void PoolChangeSN();
 
 	// 현재 시간
 	float currentTime = 0;
@@ -53,6 +56,6 @@ public:
 
 	};
 
-	//
+	
 
 };

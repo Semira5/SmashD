@@ -36,4 +36,15 @@ public:
 	float current = 0;
 
 
+	UPROPERTY()
+	class AOSY_CrashFactory* CrashFactory;
+	UPROPERTY()
+	class AOSY_HiHatFactory* HiHatFactory;
+	UPROPERTY()
+	class AOSY_SnareFactory* SnareFactory;
+	UPROPERTY()
+	class AOSY_RideFactory* RideFactory;
+	UPROPERTY()
+	class AOSY_TomFactory* TomFactory;
+
 };

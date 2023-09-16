@@ -13,7 +13,9 @@ AOSY_HiHatNodeActor::AOSY_HiHatNodeActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+
 	compBox = CreateDefaultSubobject<UBoxComponent>(TEXT("compBox"));
+
 	SetRootComponent(compBox);
 	compBox->SetBoxExtent(FVector(50, 50, 32));
 
@@ -36,7 +38,12 @@ void AOSY_HiHatNodeActor::BeginPlay()
 
 	Target = Cast<AOSY_HiHatNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_HiHatNodeEndActor::StaticClass()));
 
+	compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+
 	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_HiHatNodeActor::OnComponentBeginOverlap);
+
+	
 
 	if (Target != nullptr)
 	{
@@ -80,21 +87,19 @@ void AOSY_HiHatNodeActor::ActiveNode(const FVector& FactoryLoc, bool isActivatio
 		// 스네어 노드의 위치 설정 및 표시
 		StartLocation = FactoryLoc;
 		SetActorLocation(StartLocation);
-		//SetActorHiddenInGame(false);
 		compMesh->SetVisibility(true);
-		CurrentLerpTime = 0;
-		isHidden = false;
 		compBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		compMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CurrentLerpTime = 0;
 		UE_LOG(LogTemp, Warning, TEXT("make ----------------- %s"), *GetName());
+		isHidden = false;
 	}
 	else
 	{
-		isHidden = true;
-		//SetActorHiddenInGame(true);
 		compMesh->SetVisibility(false);
-
 		compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		compMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		isHidden = true;
 	}
 }
 

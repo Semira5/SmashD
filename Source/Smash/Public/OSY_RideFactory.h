@@ -30,6 +30,9 @@ public:
 	// 오브젝트 풀을 저장할 배열
 	TArray<AOSY_RideNodeActor*> RidePool;
 
+	// Active노드를 담을 리스트다.
+	TArray<AOSY_RideNodeActor*> ActiveRidePool;
+
 	//풀사이즈
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	int32 RidePoolSize;
@@ -41,7 +44,7 @@ public:
 	int currentNodeIndex = 0;
 
 	// 노드 스폰하는 함수
-	void spawnRideNode();
+	void PoolChangeRN();
 
 	// 현재 시간
 	float currentTime = 0;
@@ -50,5 +53,7 @@ public:
 	{ 40.008f,138.184f,200.96f,201.904f,202.376f
 
 	};
+
+
 
 };

@@ -4,6 +4,7 @@
 #include "OSY_HiHatFactory.h"
 #include "OSY_NodeActor.h"
 #include "OSY_HiHatNodeActor.h"
+#include "OSY_Drum_HiHat.h"
 
 // Sets default values
 AOSY_HiHatFactory::AOSY_HiHatFactory()
@@ -43,32 +44,30 @@ void AOSY_HiHatFactory::Tick(float DeltaTime)
 		return;
 	}
 	currentTime += DeltaTime;
-	//UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
 
 	float spawnTime = spawnTimes[currentNodeIndex];
 	// 만약 현재 시간이 spawnTime 이 됐다면
 	if (currentTime >= spawnTime)
 	{
-		spawnHiHatNode();
+		PoolChangeHN();
 		currentNodeIndex++;
 	}
 
 }
 
-void AOSY_HiHatFactory::spawnHiHatNode()
+void AOSY_HiHatFactory::PoolChangeHN()
 {
 	// 풀에서 사용 가능한 스네어 노드 찾기
 	for (AOSY_HiHatNodeActor* HiHatNode : HiHatPool)
 	{
-		if (!HiHatNode->isHidden)
-		{
-			continue; // 이미 사용 중인 오브젝트는 건너뜀
-		}
-
-		HiHatNode->ActiveNode(GetActorLocation(), true);
-
-
-		break; // 하나의 스네어 노드를 스폰한 후 멈춤
+		// 풀에 0번째에 있는 놈을 활성화를 시킨다.
+		auto ActiveHiHatNode = HiHatPool[0];
+		ActiveHiHatNode->ActiveNode(GetActorLocation(),true);
+		// 풀에서 제거한다.
+		ActiveHiHatPool.Add(ActiveHiHatNode);
+		HiHatPool.RemoveAt(0);
+		break;
+		
 	}
 }
 

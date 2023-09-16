@@ -37,6 +37,8 @@ void AOSY_CrashNodeActor::BeginPlay()
 
 	Target = Cast<AOSY_CrashNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_CrashNodeEndActor::StaticClass()));
 
+	compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	compBox-> OnComponentBeginOverlap.AddDynamic(this,&AOSY_CrashNodeActor::OnComponentBeginOverlap);
 
 	if (Target != nullptr)
@@ -82,21 +84,19 @@ void AOSY_CrashNodeActor::ActiveNode(const FVector& FactoryLoc, bool isActivatio
 		// 스네어 노드의 위치 설정 및 표시
 		StartLocation = FactoryLoc;
 		SetActorLocation(StartLocation);
-		//SetActorHiddenInGame(false);
 		compMesh->SetVisibility(true);
-		CurrentLerpTime = 0;
-		isHidden = false;
 		compBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		compMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CurrentLerpTime = 0;
 		UE_LOG(LogTemp, Warning, TEXT("make ----------------- %s"), *GetName());
+		isHidden = false;
 	}
 	else
 	{
-		isHidden = true;
-		//SetActorHiddenInGame(true);
 		compMesh->SetVisibility(false);
-
 		compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		compMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		isHidden = true;
 	}
 }
 

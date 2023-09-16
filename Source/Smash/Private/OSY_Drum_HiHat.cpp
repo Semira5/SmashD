@@ -5,6 +5,9 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
+#include <Kismet/GameplayStatics.h>
+#include "OSY_HiHatNodeActor.h"
+#include "SmashCharacter.h"
 
 // Sets default values
 AOSY_Drum_HiHat::AOSY_Drum_HiHat()
@@ -37,6 +40,8 @@ AOSY_Drum_HiHat::AOSY_Drum_HiHat()
 void AOSY_Drum_HiHat::BeginPlay()
 {
 	Super::BeginPlay();
+
+
 	
 }
 
@@ -45,10 +50,11 @@ void AOSY_Drum_HiHat::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	
 }
 
 void AOSY_Drum_HiHat::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
+	
 }
 

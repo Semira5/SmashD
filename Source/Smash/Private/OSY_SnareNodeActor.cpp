@@ -36,6 +36,8 @@ void AOSY_SnareNodeActor::BeginPlay()
 
 	Target = Cast<AOSY_SnareNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_SnareNodeEndActor::StaticClass()));
 
+	compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_SnareNodeActor::OnComponentBeginOverlap);
 
 	if (Target != nullptr)
@@ -83,17 +85,17 @@ void AOSY_SnareNodeActor::ActiveNode(const FVector& FactoryLoc, bool isActivatio
 		StartLocation = FactoryLoc;
 		SetActorLocation(StartLocation);
 		compMesh->SetVisibility(true);
-		CurrentLerpTime = 0;
-		isHidden = false;
 		compBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		compMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CurrentLerpTime = 0;
 		UE_LOG(LogTemp, Warning, TEXT("make ----------------- %s"), *GetName());
+		isHidden = false;
 	}
 	else
 	{
-		isHidden = true;
 		compMesh->SetVisibility(false);
-
 		compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		compMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		isHidden = true;
 	}
 }
