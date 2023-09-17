@@ -15,5 +15,5 @@ void UIngame_Widget::NativeConstruct()
 
 void UIngame_Widget::PlayGame()
 {
-    
+   UE_LOG(LogTemp, Warning, TEXT("StartGame!!"));
 }
