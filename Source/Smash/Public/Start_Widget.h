@@ -16,7 +16,13 @@ class SMASH_API UStart_Widget : public UUserWidget
 	
 public:
     UPROPERTY(EditDefaultsOnly, Category="MySettings", meta=(BindWidget))
+	    class UButton* btn_Arcade;
+	UPROPERTY(EditDefaultsOnly, Category="MySettings", meta=(BindWidget))
 	    class UButton* btn_Classic;
+    UPROPERTY(EditDefaultsOnly, Category="MySettings", meta=(BindWidget))
+	    class UButton* btn_Multi;
+    UPROPERTY(EditDefaultsOnly, Category="MySettings", meta=(BindWidget))
+	    class UButton* btn_Settings;
 	UPROPERTY(VisibleAnywhere, Transient, meta = (BindWidgetAnim), Category = Menu)
 	    class UWidgetAnimation* Fade;
 
@@ -25,5 +31,11 @@ protected:
 
 private:
     UFUNCTION()
+	void StartArcadeMode();
+	UFUNCTION()
 	void StartClassicMode();
+	UFUNCTION()
+	void StartMultiMode();
+	UFUNCTION()
+	void StartSettingMode();
 };
