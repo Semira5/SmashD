@@ -128,4 +128,34 @@ private:
 	class AOSY_RideFactory* RideFactory;
 	UPROPERTY()
 	class AOSY_TomFactory* TomFactory;
+
+	UPROPERTY()
+	class AOSY_CrashNodeActor* CrashNode;
+	UPROPERTY()
+	class AOSY_HiHatNodeActor* HiHatNode;
+	UPROPERTY()
+	class AOSY_SnareNodeActor* SnareNode;
+	UPROPERTY()
+	class AOSY_RideNodeActor* RideNode;
+	UPROPERTY()
+	class AOSY_TomNodeActor* TomNode;
+
+	UPROPERTY()
+	class AOSY_CrashNodeEndActor* CrashEnd;
+	UPROPERTY()
+	class AOSY_HiHatNodeEndActor* HiHatEnd;
+	UPROPERTY()
+	class AOSY_SnareNodeEndActor* SnareEnd;
+	UPROPERTY()
+	class AOSY_RideNodeEndActor* RideEnd;
+	UPROPERTY()
+	class AOSY_TomNodeEndActor* TomEnd;
+
+	float cDistance;
+	float hDistance;
+	float sDistance;
+	float rDistance;
+	float tDistance;
+
+	
 };

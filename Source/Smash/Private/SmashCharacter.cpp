@@ -29,6 +29,11 @@
 #include "OSY_Drum_Ride.h"
 #include "OSY_Drum_Snare.h"
 #include "OSY_Drum_TomKick.h"
+#include "OSY_CrashNodeEndActor.h"
+#include "OSY_HiHatNodeEndActor.h"
+#include "OSY_SnareNodeEndActor.h"
+#include "OSY_RideNodeEndActor.h"
+#include "OSY_TomNodeEndActor.h"
 
 // Sets default values
 ASmashCharacter::ASmashCharacter()
@@ -123,6 +128,17 @@ void ASmashCharacter::BeginPlay()
 	SnareFactory =Cast<AOSY_SnareFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_SnareFactory::StaticClass()));
 	RideFactory =Cast<AOSY_RideFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_RideFactory::StaticClass()));
 	TomFactory =Cast<AOSY_TomFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_TomFactory::StaticClass()));
+
+
+	CrashEnd =Cast<AOSY_CrashNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_CrashNodeEndActor::StaticClass()));
+	HiHatEnd =Cast<AOSY_HiHatNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_HiHatNodeEndActor::StaticClass()));
+	SnareEnd =Cast<AOSY_SnareNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_SnareNodeEndActor::StaticClass()));
+	RideEnd =Cast<AOSY_RideNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_RideNodeEndActor::StaticClass()));
+	TomEnd =Cast<AOSY_TomNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_TomNodeEndActor::StaticClass()));
+
+
+
+
 }
 
 // Called every frame
@@ -272,65 +288,193 @@ void ASmashCharacter::CanPlayingDrumsRight()
 //왼쪽 충돌 이벤트
 void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    if(bCanUseLeftStick)
-	{ 
-	leftLog->SetText(FText::FromString("Collision!!"));
-	APlayerController* pc = GetController<APlayerController>();
-	AOSY_CrashNodeActor* CrashNodeActor = Cast<AOSY_CrashNodeActor>(OtherActor);
-	AOSY_HiHatNodeActor* HiHatNodeActor = Cast<AOSY_HiHatNodeActor>(OtherActor);
-	AOSY_RideNodeActor* RideNodeActor = Cast<AOSY_RideNodeActor>(OtherActor);
-	AOSY_SnareNodeActor* SnarNodeActor = Cast<AOSY_SnareNodeActor>(OtherActor);
-	AOSY_TomNodeActor* TomNodeActor = Cast<AOSY_TomNodeActor>(OtherActor);
-
-	if (CrashNodeActor)
+	if (bCanUseLeftStick)
 	{
-		//Chash사운드 플레이
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), CrashSound, GetActorLocation());
+		leftLog->SetText(FText::FromString("Collision!!"));
+		APlayerController* pc = GetController<APlayerController>();
 
-		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
 
-		CrashNodeActor->ActiveNode(GetActorLocation(), false);
-		rightLog->SetText(FText::FromString("Overlap Chrash"));
-	}
 
-	if (HiHatNodeActor)
-	{
-		//HiHat사운드 플레이
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), HiHatSound, GetActorLocation());
+		AOSY_Drum_Crash* Crash = Cast<AOSY_Drum_Crash>(OtherActor);
+		if (Crash)
+		{
+			// 사운드를 재생한다.
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), CrashSound, GetActorLocation());
+			// 햅틱이 가능하게 한다.
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
 
-		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
+			// 만약 팩토리가 존재하고, 앤드가 존재하면
+			if (CrashFactory != nullptr && CrashEnd != nullptr)
+			{
+				// 만약 오브젝트 풀에 아무것도 없으면
+				if (CrashFactory->ActiveCrashPool.Num() <= 0)
+				{
+					return;
+				}
+				// 존재한다면
+				else
+				{
+					// 거리를 측정해
+					FVector cDVector = CrashEnd->GetActorLocation() - CrashFactory->ActiveCrashPool[0]->GetActorLocation();
+					cDistance = cDVector.Size();
 
-		HiHatNodeActor->ActiveNode(GetActorLocation(), false);
-	}
+					// 만약 앤드와 0번의 거리가 100보다 크면 아무것도 하지마
+					if (cDistance >= 100)
+					{
+						return;
+					}
+					else
+					{
 
-	if (RideNodeActor)
-	{
-		//Ride사운드 플레이
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), RideSound, GetActorLocation());
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
+						// 액티브 풀에서는 빼버려
+						CrashFactory->ActiveCrashPool.RemoveAt(0);
+					}
 
-		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
-		RideNodeActor->ActiveNode(GetActorLocation(), false);
-	}
+				}
+			}
 
-	if (SnarNodeActor)
-	{
-		//Snar사운드 플레이
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), SnarSound, GetActorLocation());
-
-		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
-
-		SnarNodeActor->ActiveNode(GetActorLocation(), false);
-	}
-
-	if (TomNodeActor)
-	{
-		//Tom사운드 플레이
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), TomSound, GetActorLocation());
-
-		pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
-
-		TomNodeActor->ActiveNode(GetActorLocation(), false);
 		}
+
+		AOSY_Drum_HiHat* HiHat = Cast<AOSY_Drum_HiHat>(OtherActor);
+		if (HiHat)
+		{
+			// 사운드를 재생한다.
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), HiHatSound, GetActorLocation());
+			// 햅틱이 가능하게 한다.
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
+
+			if (HiHatFactory != nullptr && HiHatEnd != nullptr)
+			{
+				if (HiHatFactory->ActiveHiHatPool.Num() <= 0)
+				{
+					return;
+				}
+				else
+				{
+					FVector hDVector = HiHatEnd->GetActorLocation() - HiHatFactory->ActiveHiHatPool[0]->GetActorLocation();
+					hDistance = hDVector.Size();
+
+					if (hDistance >= 100)
+					{
+						return;
+					}
+					else
+					{
+						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
+						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
+						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
+
+					}
+
+				}
+			}
+
+		}
+
+		AOSY_Drum_Snare* Snare = Cast<AOSY_Drum_Snare>(OtherActor);
+		if (Snare)
+		{
+			// 사운드를 재생한다.
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), RideSound, GetActorLocation());
+			// 햅틱이 가능하게 한다.
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
+
+			if (SnareFactory != nullptr && SnareEnd != nullptr)
+			{
+				if (SnareFactory->ActiveSnarePool.Num() <= 0)
+				{
+					return;
+				}
+				else
+				{
+					FVector sDVector = SnareEnd->GetActorLocation() - SnareFactory->ActiveSnarePool[0]->GetActorLocation();
+					sDistance = sDVector.Size();
+
+					if (sDistance >= 100)
+					{
+						return;
+					}
+					else
+					{
+						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
+						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
+						SnareFactory->ActiveSnarePool.RemoveAt(0);
+					}
+				}
+			}
+
+		}
+
+		AOSY_Drum_Ride* Ride = Cast<AOSY_Drum_Ride>(OtherActor);
+		if (Ride)
+		{
+			// 사운드를 재생한다.
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), RideSound, GetActorLocation());
+			// 햅틱이 가능하게 한다.
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
+
+			if (RideFactory != nullptr && RideEnd != nullptr)
+			{
+				if (RideFactory->ActiveRidePool.Num() <= 0)
+				{
+					return;
+				}
+				else
+				{
+					FVector rDVector = RideEnd->GetActorLocation() - RideFactory->ActiveRidePool[0]->GetActorLocation();
+					rDistance = rDVector.Size();
+
+					if (rDistance >= 100)
+					{
+						RideFactory->ActiveRidePool[0]->ActiveNode(FVector::ZeroVector, false);
+						RideFactory->RidePool.Add(RideFactory->ActiveRidePool[0]);
+						RideFactory->ActiveRidePool.RemoveAt(0);
+					}
+				}
+			}
+
+		}
+
+		AOSY_Drum_TomKick* Tom = Cast<AOSY_Drum_TomKick>(OtherActor);
+		if (Tom)
+		{
+			// 사운드를 재생한다.
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), TomSound, GetActorLocation());
+			// 햅틱이 가능하게 한다.
+			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
+
+			if (TomFactory != nullptr && TomEnd != nullptr)
+			{
+				if (TomFactory->ActiveTomPool.Num() <= 0)
+				{
+					return;
+				}
+				else
+				{
+					FVector tDVector = TomEnd->GetActorLocation() - TomFactory->ActiveTomPool[0]->GetActorLocation();
+					tDistance = tDVector.Size();
+
+					if (tDistance >= 100)
+					{
+						return;
+					}
+					else
+					{
+						TomFactory->ActiveTomPool[0]->ActiveNode(FVector::ZeroVector, false);
+						TomFactory->TomPool.Add(TomFactory->ActiveTomPool[0]);
+						TomFactory->ActiveTomPool.RemoveAt(0);
+					}
+				}
+			}
+
+		}
+
+
 	}
 }
 
@@ -352,22 +496,41 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
-			if (CrashFactory != nullptr && CrashFactory->ActiveCrashPool.Num() <= 0)
+			
+			// 만약 팩토리가 존재하고, 앤드가 존재하면
+			if (CrashFactory != nullptr && CrashEnd != nullptr)
 			{
-				return;
-			}
-			else
-			{
-				//액티브풀에 담긴 상태일테니까
-				// 활성화를 끈 다음에
-				CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
-				// 그걸 풀에 넣고
-				CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
-				// 액티브 풀에서는 빼버려
-				CrashFactory->ActiveCrashPool.RemoveAt(0);
+				// 만약 오브젝트 풀에 아무것도 없으면
+				if (CrashFactory->ActiveCrashPool.Num() <= 0)
+				{
+					return;
+				}
+				// 존재한다면
+				else
+				{
+					// 거리를 측정해
+					FVector cDVector= CrashEnd->GetActorLocation()-CrashFactory->ActiveCrashPool[0]->GetActorLocation();
+					cDistance = cDVector.Size();
 
-			}
+					// 만약 앤드와 0번의 거리가 100보다 크면 아무것도 하지마
+					if (cDistance >= 100)
+					{
+						return;
+					}
+					else
+					{
 
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
+						// 액티브 풀에서는 빼버려
+						CrashFactory->ActiveCrashPool.RemoveAt(0);
+					}
+
+				}
+			}
 		}
 
 		AOSY_Drum_HiHat* HiHat = Cast<AOSY_Drum_HiHat>(OtherActor);
@@ -378,16 +541,31 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
-			if (HiHatFactory!=nullptr&&HiHatFactory->ActiveHiHatPool.Num() <= 0)
-			{
-				return;
-			}
-			else
-			{
-				HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
-				HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
-				HiHatFactory->ActiveHiHatPool.RemoveAt(0);
 
+			if (HiHatFactory != nullptr && HiHatEnd != nullptr)
+			{
+				if (HiHatFactory->ActiveHiHatPool.Num() <=0)
+				{
+					return;
+				}
+				else
+				{
+					FVector hDVector = HiHatEnd->GetActorLocation() - HiHatFactory->ActiveHiHatPool[0]->GetActorLocation();
+					hDistance = hDVector.Size();
+
+					if (hDistance >= 100)
+					{
+						return;
+					}
+					else
+					{
+						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
+						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
+						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
+
+					}
+
+				}
 			}
 
 		}
@@ -400,16 +578,28 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
-			if (SnareFactory != nullptr && SnareFactory->ActiveSnarePool.Num() <= 0)
+			if (SnareFactory != nullptr && SnareEnd != nullptr)
 			{
-				return;
-			}
-			else
-			{
-				SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
-				SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
-				SnareFactory->ActiveSnarePool.RemoveAt(0);
+				if (SnareFactory->ActiveSnarePool.Num() <= 0)
+				{
+					return;
+				}
+				else
+				{
+					FVector sDVector = SnareEnd->GetActorLocation()-SnareFactory->ActiveSnarePool[0]->GetActorLocation();
+					sDistance = sDVector.Size();
 
+					if (sDistance >= 100)
+					{
+						return;
+					}
+					else
+					{	
+						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
+						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
+						SnareFactory->ActiveSnarePool.RemoveAt(0);
+					}
+				}
 			}
 
 		}
@@ -422,18 +612,25 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
-			if (RideFactory != nullptr && RideFactory->ActiveRidePool.Num() <= 0)
+			if (RideFactory != nullptr && RideEnd != nullptr)
 			{
-				return;
-			}
-			else
-			{
-				RideFactory->ActiveRidePool[0]->ActiveNode(FVector::ZeroVector, false);
-				RideFactory->RidePool.Add(RideFactory->ActiveRidePool[0]);
-				RideFactory->ActiveRidePool.RemoveAt(0);
+				if (RideFactory->ActiveRidePool.Num() <= 0)
+				{
+					return;
+				}
+				else
+				{
+					FVector rDVector = RideEnd->GetActorLocation()-RideFactory->ActiveRidePool[0]->GetActorLocation();
+					rDistance = rDVector.Size();
 
+					if (rDistance >= 100)
+					{
+						RideFactory->ActiveRidePool[0]->ActiveNode(FVector::ZeroVector, false);
+						RideFactory->RidePool.Add(RideFactory->ActiveRidePool[0]);
+						RideFactory->ActiveRidePool.RemoveAt(0);
+					}
+				}
 			}
-
 		}
 
 		AOSY_Drum_TomKick* Tom = Cast<AOSY_Drum_TomKick>(OtherActor);
@@ -444,21 +641,33 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
-			if (TomFactory != nullptr && TomFactory->ActiveTomPool.Num() <= 0)
+			if (TomFactory != nullptr && TomEnd != nullptr)
 			{
-				return;
-			}
-			else
-			{
-				TomFactory->ActiveTomPool[0]->ActiveNode(FVector::ZeroVector, false);
-				TomFactory->TomPool.Add(TomFactory->ActiveTomPool[0]);
-				TomFactory->ActiveTomPool.RemoveAt(0);
+				if (TomFactory->ActiveTomPool.Num() <= 0)
+				{
+					return;
+				}
+				else
+				{
+					FVector tDVector = TomEnd->GetActorLocation()-TomFactory->ActiveTomPool[0]->GetActorLocation();
+					tDistance = tDVector.Size();
 
+					if (tDistance >= 100)
+					{
+						return;
+					}
+					else
+					{
+						TomFactory->ActiveTomPool[0]->ActiveNode(FVector::ZeroVector, false);
+						TomFactory->TomPool.Add(TomFactory->ActiveTomPool[0]);
+						TomFactory->ActiveTomPool.RemoveAt(0);
+					}
+				}
 			}
-
+			
 		}
 
-
+		
 	}
 }
 
