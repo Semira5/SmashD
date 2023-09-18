@@ -20,6 +20,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Transient, meta = (BindWidgetAnim), Category = Menu)
 	class UWidgetAnimation* FadeOut;
+	UPROPERTY(VisibleAnywhere, Transient, meta = (BindWidgetAnim), Category = Menu)
+	class UWidgetAnimation* Gradation;
 
 protected:
 	virtual void NativeConstruct() override;
