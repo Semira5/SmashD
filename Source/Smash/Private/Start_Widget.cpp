@@ -17,7 +17,7 @@ void UStart_Widget::NativeConstruct()
 
 void UStart_Widget::StartArcadeMode()
 {
-    UE_LOG(LogTemp, Warning, TEXT("StartArcade!!"));
+    //UE_LOG(LogTemp, Warning, TEXT("StartArcade!!"));
 }
 
 void UStart_Widget::StartClassicMode()
@@ -29,7 +29,7 @@ void UStart_Widget::StartClassicMode()
         FTimerHandle DelayHandle;
         GetWorld()->GetTimerManager().SetTimer(DelayHandle, FTimerDelegate::CreateLambda([&]()
         {
-            FString LevelName = TEXT("OT_Map");
+            FString LevelName = TEXT("PlayMap2");
             UGameplayStatics::OpenLevel(this, FName(LevelName));
         }
     ), 2.0f, false);
@@ -38,11 +38,11 @@ void UStart_Widget::StartClassicMode()
 
 void UStart_Widget::StartMultiMode()
 {
-    UE_LOG(LogTemp, Warning, TEXT("StartMulti!!"));
+    //UE_LOG(LogTemp, Warning, TEXT("StartMulti!!"));
 }
 
 void UStart_Widget::StartSettingMode()
 {
-    UE_LOG(LogTemp, Warning, TEXT("StartSettings!!"));
+    //UE_LOG(LogTemp, Warning, TEXT("StartSettings!!"));
 }
 

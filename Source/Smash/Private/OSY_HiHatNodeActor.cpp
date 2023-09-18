@@ -37,6 +37,7 @@ void AOSY_HiHatNodeActor::BeginPlay()
 	Super::BeginPlay();
 
 	Target = Cast<AOSY_HiHatNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_HiHatNodeEndActor::StaticClass()));
+	SetActorRotation(Target->GetActorRotation());
 
 	compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
@@ -91,7 +92,7 @@ void AOSY_HiHatNodeActor::ActiveNode(const FVector& FactoryLoc, bool isActivatio
 		compBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		compMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		CurrentLerpTime = 0;
-		UE_LOG(LogTemp, Warning, TEXT("make ----------------- %s"), *GetName());
+		//UE_LOG(LogTemp, Warning, TEXT("make ----------------- %s"), *GetName());
 		isHidden = false;
 	}
 	else

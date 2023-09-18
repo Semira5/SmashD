@@ -43,7 +43,7 @@ void UWidgetPointerComponent::SetupPlayerInputComponent(class UEnhancedInputComp
 
 void UWidgetPointerComponent::PressButton()
 {
-    UE_LOG(LogTemp, Warning, TEXT("Yes!!!"));
+    //UE_LOG(LogTemp, Warning, TEXT("Yes!!!"));
     player->rightWidgetPointer->PressPointerKey(EKeys::LeftMouseButton);
 }
 

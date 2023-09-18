@@ -2,7 +2,6 @@
 
 
 #include "OSY_HiHatFactory.h"
-#include "OSY_NodeActor.h"
 #include "OSY_HiHatNodeActor.h"
 #include "OSY_Drum_HiHat.h"
 

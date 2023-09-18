@@ -37,6 +37,8 @@ void AOSY_CrashNodeActor::BeginPlay()
 
 	Target = Cast<AOSY_CrashNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_CrashNodeEndActor::StaticClass()));
 
+	SetActorRotation(Target->GetActorRotation());
+
 	compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	compBox-> OnComponentBeginOverlap.AddDynamic(this,&AOSY_CrashNodeActor::OnComponentBeginOverlap);
@@ -88,7 +90,7 @@ void AOSY_CrashNodeActor::ActiveNode(const FVector& FactoryLoc, bool isActivatio
 		compBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		compMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		CurrentLerpTime = 0;
-		UE_LOG(LogTemp, Warning, TEXT("make ----------------- %s"), *GetName());
+		//UE_LOG(LogTemp, Warning, TEXT("make ----------------- %s"), *GetName());
 		isHidden = false;
 	}
 	else

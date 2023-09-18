@@ -2,7 +2,6 @@
 
 
 #include "OSY_TomFactory.h"
-#include "OSY_NodeActor.h"
 #include "OSY_TomNodeActor.h"
 
 // Sets default values

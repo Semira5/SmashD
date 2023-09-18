@@ -2,7 +2,6 @@
 
 
 #include "OSY_SnareFactory.h"
-#include "OSY_NodeActor.h"
 #include "OSY_SnareNodeActor.h"
 
 // Sets default values

@@ -36,6 +36,8 @@ void AOSY_TomNodeActor::BeginPlay()
 
 	Target = Cast<AOSY_TomNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_TomNodeEndActor::StaticClass()));
 
+	SetActorRotation(Target->GetActorRotation());
+
 	compBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_TomNodeActor::OnComponentBeginOverlap);
@@ -85,7 +87,7 @@ void AOSY_TomNodeActor::ActiveNode(const FVector& FactoryLoc, bool isActivation)
 		compBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		compMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		CurrentLerpTime = 0;
-		UE_LOG(LogTemp, Warning, TEXT("make ----------------- %s"), *GetName());
+		//UE_LOG(LogTemp, Warning, TEXT("make ----------------- %s"), *GetName());
 		isHidden = false;
 	}
 	else

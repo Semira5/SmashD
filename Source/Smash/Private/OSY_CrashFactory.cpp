@@ -2,7 +2,6 @@
 
 
 #include "OSY_CrashFactory.h"
-#include "OSY_NodeActor.h"
 #include "OSY_CrashNodeActor.h"
 #include "OSY_Level.h"
 #include "Kismet/GameplayStatics.h"

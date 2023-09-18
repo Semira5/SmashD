@@ -56,13 +56,13 @@ ASmashCharacter::ASmashCharacter()
 	leftStick = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Left Stick Mesh"));
 	leftStick->SetupAttachment(leftMotionController);
 
-	leftLog = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Left Log"));
-	leftLog->SetupAttachment(leftMotionController);
-	leftLog->SetRelativeLocation(FVector(70, -40, 0));
-	leftLog->SetRelativeRotation(FRotator(0, 180, 0));
-	leftLog->SetTextRenderColor(FColor(255, 255, 0, 255));
-	leftLog->SetHorizontalAlignment(EHTA_Center);
-	leftLog->SetVerticalAlignment(EVRTA_TextCenter);
+	//leftLog = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Left Log"));
+	//leftLog->SetupAttachment(leftMotionController);
+	//leftLog->SetRelativeLocation(FVector(70, -40, 0));
+	//leftLog->SetRelativeRotation(FRotator(0, 180, 0));
+	//leftLog->SetTextRenderColor(FColor(255, 255, 0, 255));
+	//leftLog->SetHorizontalAlignment(EHTA_Center);
+	//leftLog->SetVerticalAlignment(EVRTA_TextCenter);
 
 	rightMotionController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("Right MotionController"));
 	rightMotionController->SetupAttachment(RootComponent);
@@ -71,13 +71,13 @@ ASmashCharacter::ASmashCharacter()
 	rightStick = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Right Stick Mesh"));
 	rightStick->SetupAttachment(rightMotionController);
 
-	rightLog = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Right Log"));
-	rightLog->SetupAttachment(rightMotionController);
-	rightLog->SetRelativeLocation(FVector(70, 40, 0));
-	rightLog->SetRelativeRotation(FRotator(0, 180, 0));
-	rightLog->SetTextRenderColor(FColor(255, 255, 0, 255));
-	rightLog->SetHorizontalAlignment(EHTA_Center);
-	rightLog->SetVerticalAlignment(EVRTA_TextCenter);
+	////rightLog = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Right Log"));
+	//rightLog->SetupAttachment(rightMotionController);
+	//rightLog->SetRelativeLocation(FVector(70, 40, 0));
+	//rightLog->SetRelativeRotation(FRotator(0, 180, 0));
+	//rightLog->SetTextRenderColor(FColor(255, 255, 0, 255));
+	//rightLog->SetHorizontalAlignment(EHTA_Center);
+	//rightLog->SetVerticalAlignment(EVRTA_TextCenter);
 
 	leftcomp = CreateDefaultSubobject<UBoxComponent>(TEXT("leftcompBox"));
 	leftcomp->SetupAttachment(leftStick);
@@ -106,8 +106,8 @@ void ASmashCharacter::BeginPlay()
 	rightcomp->OnComponentBeginOverlap.AddDynamic(this, &ASmashCharacter::OnComponentRightBeginOverlap);
 	leftcomp->OnComponentBeginOverlap.AddDynamic(this, &ASmashCharacter::OnComponentLeftBeginOverlap);
 
-	leftLog->SetText(FText::FromString("1"));
-	rightLog->SetText(FText::FromString("2"));
+	//leftLog->SetText(FText::FromString("1"));
+	//rightLog->SetText(FText::FromString("2"));
 
 	//머리 장비 기준점 설정
 	UHeadMountedDisplayFunctionLibrary::SetTrackingOrigin(EHMDTrackingOrigin::Stage);
@@ -178,28 +178,28 @@ void ASmashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void ASmashCharacter::RightTriggerDown()
 {
-	//rightLog->SetText(FText::FromString("Right Trigger Down!"));
+	////rightLog->SetText(FText::FromString("Right Trigger Down!"));
 	bRightTriggerDown = true;
 	CanPlayingDrumsRight();
 }
 
 void ASmashCharacter::RightTriggerUp()
 {
-	//rightLog->SetText(FText::FromString("Right Trigger Up!"));
+	////rightLog->SetText(FText::FromString("Right Trigger Up!"));
 	bRightTriggerDown = false;
 	CanPlayingDrumsRight();
 }
 
 void ASmashCharacter::RightGripDown()
 {
-	//rightLog->SetText(FText::FromString("Right Grip Down!"));
+	////rightLog->SetText(FText::FromString("Right Grip Down!"));
 	bRightGripDown = true;
 	CanPlayingDrumsRight();
 }
 
 void ASmashCharacter::RightGripUp()
 {
-	//rightLog->SetText(FText::FromString("Right Grip Up!"));
+	////rightLog->SetText(FText::FromString("Right Grip Up!"));
 	bRightGripDown = false;
 	CanPlayingDrumsRight();
 }
@@ -207,7 +207,7 @@ void ASmashCharacter::RightGripUp()
 
 void ASmashCharacter::RightADown()
 {
-	rightLog->SetText(FText::FromString("Right A Button Down!"));
+	//rightLog->SetText(FText::FromString("Right A Button Down!"));
 
 // 	사용자가 바라보고 있는 방향을 정면으로 다시 정렬(회전, 위치)
 // 		UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
@@ -215,17 +215,17 @@ void ASmashCharacter::RightADown()
 
 void ASmashCharacter::RightAUp()
 {
-	rightLog->SetText(FText::FromString("Right A Button Up!"));
+	//rightLog->SetText(FText::FromString("Right A Button Up!"));
 }
 
 void ASmashCharacter::RightBDown()
 {
-	rightLog->SetText(FText::FromString("Right B Button Down!"));
+	//rightLog->SetText(FText::FromString("Right B Button Down!"));
 }
 
 void ASmashCharacter::RightBUp()
 {
-	rightLog->SetText(FText::FromString("Right B Button Up!"));
+	//rightLog->SetText(FText::FromString("Right B Button Up!"));
 }
 
 void ASmashCharacter::LeftTriggerDown()
@@ -258,13 +258,13 @@ void ASmashCharacter::CanPlayingDrumsLeft()
 	{
 		APlayerController* pc = GetController<APlayerController>();
 
-		leftLog->SetText(FText::FromString("Can Playing Drum"));
+		//leftLog->SetText(FText::FromString("Can Playing Drum"));
 
 		bCanUseLeftStick = true;
 	}
 	else
 	{
-		leftLog->SetText(FText::FromString("Cant Playing Drum"));
+		//leftLog->SetText(FText::FromString("Cant Playing Drum"));
 	}
 }
 
@@ -275,13 +275,13 @@ void ASmashCharacter::CanPlayingDrumsRight()
 		APlayerController* pc = GetController<APlayerController>();
 
 		//드럼 콜리젼과 연결 -> 연주
-		rightLog->SetText(FText::FromString("Can Playing Drum"));
+		//rightLog->SetText(FText::FromString("Can Playing Drum"));
 
 		bCanUseRightStick = true;
 	}
 	else
 	{
-		rightLog->SetText(FText::FromString("Cant Playing Drum"));
+		//rightLog->SetText(FText::FromString("Cant Playing Drum"));
 	}
 }
 
@@ -290,7 +290,7 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 {
 	if (bCanUseLeftStick)
 	{
-		leftLog->SetText(FText::FromString("Collision!!"));
+		//leftLog->SetText(FText::FromString("Collision!!"));
 		APlayerController* pc = GetController<APlayerController>();
 
 
@@ -380,7 +380,7 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 		if (Snare)
 		{
 			// 사운드를 재생한다.
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), RideSound, GetActorLocation());
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), SnarSound, GetActorLocation());
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
 
@@ -483,7 +483,7 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 {
 	if (bCanUseRightStick)
 	{
-	    rightLog->SetText(FText::FromString("Collision!!"));
+	    //rightLog->SetText(FText::FromString("Collision!!"));
 		APlayerController* pc = GetController<APlayerController>();
 
 		
@@ -574,7 +574,7 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 		if (Snare)
 		{
 			// 사운드를 재생한다.
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), RideSound, GetActorLocation());
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), SnarSound, GetActorLocation());
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
