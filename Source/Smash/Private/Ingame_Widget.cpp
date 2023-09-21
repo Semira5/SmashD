@@ -11,7 +11,7 @@ void UIngame_Widget::NativeConstruct()
 
     btn_PlayGame->OnClicked.AddDynamic(this, &UIngame_Widget::PlayGame);
     PlayAnimationForward(FadeOut);
-   
+    PlayAnimation(Gradation, 0.0f, 0);
     
 }
 

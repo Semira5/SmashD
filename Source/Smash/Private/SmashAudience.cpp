@@ -27,11 +27,11 @@ void ASmashAudience::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	audMat = UMaterialInstanceDynamic::Create(meshComp->GetMaterial(0), this);
-	meshComp->SetMaterial(0, audMat);
-
-	audMat->SetVectorParameterValue(FName("AudColor"), (FVector4)baseColor);
-	audMat->SetScalarParameterValue(FName("Intensity"), 5);
+// 	audMat = UMaterialInstanceDynamic::Create(meshComp->GetMaterial(0), this);
+// 	meshComp->SetMaterial(0, audMat);
+// 
+// 	audMat->SetVectorParameterValue(FName("AudColor"), (FVector4)baseColor);
+// 	audMat->SetScalarParameterValue(FName("Intensity"), 5);
 }
 
 // Called every frame
