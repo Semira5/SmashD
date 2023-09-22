@@ -157,5 +157,10 @@ private:
 	float rDistance;
 	float tDistance;
 
+public:
+	int earlyCount = 0;
+	int greatCount = 0;
+	int excellentCount = 0;
+
 	
 };

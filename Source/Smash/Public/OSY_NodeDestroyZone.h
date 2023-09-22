@@ -35,6 +35,8 @@ public:
 
 	float current = 0;
 
+	int missCount = 0;
+
 
 	UPROPERTY()
 	class AOSY_CrashFactory* CrashFactory;

@@ -75,6 +75,8 @@ void AOSY_NodeDestroyZone::OnComponentBeginOverlap(UPrimitiveComponent* Overlapp
 		CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
 		// 액티브 풀에서는 빼버려
 		CrashFactory->ActiveCrashPool.RemoveAt(0);
+
+		missCount+=1;
 		
 
 	}
@@ -89,6 +91,8 @@ void AOSY_NodeDestroyZone::OnComponentBeginOverlap(UPrimitiveComponent* Overlapp
 		HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
 		// 액티브 풀에서는 빼버려
 		HiHatFactory->ActiveHiHatPool.RemoveAt(0);
+
+		missCount += 1;
 	}
 
 	if (SN != nullptr)
@@ -103,6 +107,8 @@ void AOSY_NodeDestroyZone::OnComponentBeginOverlap(UPrimitiveComponent* Overlapp
 			SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
 			SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
 			SnareFactory->ActiveSnarePool.RemoveAt(0);
+
+			missCount += 1;
 
 		}
 	}

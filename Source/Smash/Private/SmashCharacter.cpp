@@ -56,13 +56,7 @@ ASmashCharacter::ASmashCharacter()
 	leftStick = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Left Stick Mesh"));
 	leftStick->SetupAttachment(leftMotionController);
 
-	//leftLog = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Left Log"));
-	//leftLog->SetupAttachment(leftMotionController);
-	//leftLog->SetRelativeLocation(FVector(70, -40, 0));
-	//leftLog->SetRelativeRotation(FRotator(0, 180, 0));
-	//leftLog->SetTextRenderColor(FColor(255, 255, 0, 255));
-	//leftLog->SetHorizontalAlignment(EHTA_Center);
-	//leftLog->SetVerticalAlignment(EVRTA_TextCenter);
+	
 
 	rightMotionController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("Right MotionController"));
 	rightMotionController->SetupAttachment(RootComponent);
@@ -71,13 +65,6 @@ ASmashCharacter::ASmashCharacter()
 	rightStick = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Right Stick Mesh"));
 	rightStick->SetupAttachment(rightMotionController);
 
-	////rightLog = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Right Log"));
-	//rightLog->SetupAttachment(rightMotionController);
-	//rightLog->SetRelativeLocation(FVector(70, 40, 0));
-	//rightLog->SetRelativeRotation(FRotator(0, 180, 0));
-	//rightLog->SetTextRenderColor(FColor(255, 255, 0, 255));
-	//rightLog->SetHorizontalAlignment(EHTA_Center);
-	//rightLog->SetVerticalAlignment(EVRTA_TextCenter);
 
 	leftcomp = CreateDefaultSubobject<UBoxComponent>(TEXT("leftcompBox"));
 	leftcomp->SetupAttachment(leftStick);
@@ -106,8 +93,6 @@ void ASmashCharacter::BeginPlay()
 	rightcomp->OnComponentBeginOverlap.AddDynamic(this, &ASmashCharacter::OnComponentRightBeginOverlap);
 	leftcomp->OnComponentBeginOverlap.AddDynamic(this, &ASmashCharacter::OnComponentLeftBeginOverlap);
 
-	//leftLog->SetText(FText::FromString("1"));
-	//rightLog->SetText(FText::FromString("2"));
 
 	//머리 장비 기준점 설정
 	UHeadMountedDisplayFunctionLibrary::SetTrackingOrigin(EHMDTrackingOrigin::Stage);
@@ -258,8 +243,6 @@ void ASmashCharacter::CanPlayingDrumsLeft()
 	{
 		APlayerController* pc = GetController<APlayerController>();
 
-		//leftLog->SetText(FText::FromString("Can Playing Drum"));
-
 		bCanUseLeftStick = true;
 	}
 	else
@@ -274,14 +257,11 @@ void ASmashCharacter::CanPlayingDrumsRight()
 	{
 		APlayerController* pc = GetController<APlayerController>();
 
-		//드럼 콜리젼과 연결 -> 연주
-		//rightLog->SetText(FText::FromString("Can Playing Drum"));
-
 		bCanUseRightStick = true;
 	}
 	else
 	{
-		//rightLog->SetText(FText::FromString("Cant Playing Drum"));
+
 	}
 }
 
@@ -292,8 +272,6 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 	{
 		//leftLog->SetText(FText::FromString("Collision!!"));
 		APlayerController* pc = GetController<APlayerController>();
-
-
 
 		AOSY_Drum_Crash* Crash = Cast<AOSY_Drum_Crash>(OtherActor);
 		if (Crash)
@@ -318,14 +296,9 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 					FVector cDVector = CrashEnd->GetActorLocation() - CrashFactory->ActiveCrashPool[0]->GetActorLocation();
 					cDistance = cDVector.Size();
 
-					// 만약 앤드와 0번의 거리가 100보다 크면 아무것도 하지마
-					if (cDistance >= 100)
+					//Exellent
+					if (cDistance > 0 && cDistance <= 100)
 					{
-						return;
-					}
-					else
-					{
-
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
 						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
@@ -333,7 +306,42 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
 						// 액티브 풀에서는 빼버려
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
+						// 액설런트카운트에 1씩 더해
+						excellentCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
+					else if (cDistance > 100 && cDistance <= 200)
+					{
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
+						// 액티브 풀에서는 빼버려
+						CrashFactory->ActiveCrashPool.RemoveAt(0);
+						// 그레이트카운트에 1씩 더해
+						greatCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
+					}
+					else if (cDistance > 200 && cDistance <= 300)
+					{
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
+						// 액티브 풀에서는 빼버려
+						CrashFactory->ActiveCrashPool.RemoveAt(0);
+						// 얼리카운트에 1씩 더해
+						earlyCount += 1;
+
+						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
+					}
+					else
+					{
+						return;
+					}
+
 
 				}
 			}
@@ -359,16 +367,50 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 					FVector hDVector = HiHatEnd->GetActorLocation() - HiHatFactory->ActiveHiHatPool[0]->GetActorLocation();
 					hDistance = hDVector.Size();
 
-					if (hDistance >= 100)
+					//Exellent
+					if (hDistance > 0 && hDistance <= 100)
 					{
-						return;
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
+						// 액티브 풀에서는 빼버려
+						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
+						// 액설런트카운트에 1씩 더해
+						excellentCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
+					}
+					else if (hDistance > 100 && hDistance <= 200)
+					{
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
+						// 액티브 풀에서는 빼버려
+						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
+						// 그레이트카운트에 1씩 더해
+						greatCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
+					}
+					else if(hDistance>200 && hDistance<=300)
+					{
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
+						// 액티브 풀에서는 빼버려
+						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
+						// 얼리카운트에 1씩 더해
+						earlyCount += 1;
+
+						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
-						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
-						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
-						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
-
+						return;
 					}
 
 				}
@@ -395,85 +437,56 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 					FVector sDVector = SnareEnd->GetActorLocation() - SnareFactory->ActiveSnarePool[0]->GetActorLocation();
 					sDistance = sDVector.Size();
 
-					if (sDistance >= 100)
+					//Exellent
+					if (sDistance > 0 && sDistance <= 100)
 					{
-						return;
-					}
-					else
-					{
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
 						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
 						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
+						// 액티브 풀에서는 빼버려
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
+						// 액설런트카운트에 1씩 더해
+						excellentCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
-				}
-			}
-
-		}
-
-		AOSY_Drum_Ride* Ride = Cast<AOSY_Drum_Ride>(OtherActor);
-		if (Ride)
-		{
-			// 사운드를 재생한다.
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), RideSound, GetActorLocation());
-			// 햅틱이 가능하게 한다.
-			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
-
-			if (RideFactory != nullptr && RideEnd != nullptr)
-			{
-				if (RideFactory->ActiveRidePool.Num() <= 0)
-				{
-					return;
-				}
-				else
-				{
-					FVector rDVector = RideEnd->GetActorLocation() - RideFactory->ActiveRidePool[0]->GetActorLocation();
-					rDistance = rDVector.Size();
-
-					if (rDistance >= 100)
+					else if (sDistance > 100 && sDistance <= 200)
 					{
-						RideFactory->ActiveRidePool[0]->ActiveNode(FVector::ZeroVector, false);
-						RideFactory->RidePool.Add(RideFactory->ActiveRidePool[0]);
-						RideFactory->ActiveRidePool.RemoveAt(0);
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
+						// 액티브 풀에서는 빼버려
+						SnareFactory->ActiveSnarePool.RemoveAt(0);
+						// 그레이트카운트에 1씩 더해
+						greatCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
-				}
-			}
-
-		}
-
-		AOSY_Drum_TomKick* Tom = Cast<AOSY_Drum_TomKick>(OtherActor);
-		if (Tom)
-		{
-			// 사운드를 재생한다.
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), TomSound, GetActorLocation());
-			// 햅틱이 가능하게 한다.
-			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
-
-			if (TomFactory != nullptr && TomEnd != nullptr)
-			{
-				if (TomFactory->ActiveTomPool.Num() <= 0)
-				{
-					return;
-				}
-				else
-				{
-					FVector tDVector = TomEnd->GetActorLocation() - TomFactory->ActiveTomPool[0]->GetActorLocation();
-					tDistance = tDVector.Size();
-
-					if (tDistance >= 100)
+					else if (sDistance > 200 && sDistance <= 300)
 					{
-						return;
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
+						// 액티브 풀에서는 빼버려
+						SnareFactory->ActiveSnarePool.RemoveAt(0);
+						// 얼리카운트에 1씩 더해
+						earlyCount += 1;
+
+						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
-						TomFactory->ActiveTomPool[0]->ActiveNode(FVector::ZeroVector, false);
-						TomFactory->TomPool.Add(TomFactory->ActiveTomPool[0]);
-						TomFactory->ActiveTomPool.RemoveAt(0);
+						return;
 					}
+					
 				}
 			}
 
 		}
-
 
 	}
 }
@@ -486,8 +499,6 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 	    //rightLog->SetText(FText::FromString("Collision!!"));
 		APlayerController* pc = GetController<APlayerController>();
 
-		
-	
 		AOSY_Drum_Crash* Crash = Cast<AOSY_Drum_Crash>(OtherActor);
 		if (Crash)
 		{
@@ -496,7 +507,6 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
-			
 			// 만약 팩토리가 존재하고, 앤드가 존재하면
 			if (CrashFactory != nullptr && CrashEnd != nullptr)
 			{
@@ -509,17 +519,12 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 				else
 				{
 					// 거리를 측정해
-					FVector cDVector= CrashEnd->GetActorLocation()-CrashFactory->ActiveCrashPool[0]->GetActorLocation();
+					FVector cDVector = CrashEnd->GetActorLocation() - CrashFactory->ActiveCrashPool[0]->GetActorLocation();
 					cDistance = cDVector.Size();
 
-					// 만약 앤드와 0번의 거리가 100보다 크면 아무것도 하지마
-					if (cDistance >= 100)
+					//Exellent
+					if (cDistance > 0 && cDistance <= 100)
 					{
-						return;
-					}
-					else
-					{
-
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
 						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
@@ -527,10 +532,46 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
 						// 액티브 풀에서는 빼버려
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
+						// 액설런트카운트에 1씩 더해
+						excellentCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
+					else if (cDistance > 100 && cDistance <= 200)
+					{
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
+						// 액티브 풀에서는 빼버려
+						CrashFactory->ActiveCrashPool.RemoveAt(0);
+						// 그레이트카운트에 1씩 더해
+						greatCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
+					}
+					else if (cDistance > 200 && cDistance <= 300)
+					{
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
+						// 액티브 풀에서는 빼버려
+						CrashFactory->ActiveCrashPool.RemoveAt(0);
+						// 얼리카운트에 1씩 더해
+						earlyCount += 1;
+
+						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
+					}
+					else
+					{
+						return;
+					}
+
 
 				}
 			}
+
 		}
 
 		AOSY_Drum_HiHat* HiHat = Cast<AOSY_Drum_HiHat>(OtherActor);
@@ -541,10 +582,9 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
-
 			if (HiHatFactory != nullptr && HiHatEnd != nullptr)
 			{
-				if (HiHatFactory->ActiveHiHatPool.Num() <=0)
+				if (HiHatFactory->ActiveHiHatPool.Num() <= 0)
 				{
 					return;
 				}
@@ -553,16 +593,50 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 					FVector hDVector = HiHatEnd->GetActorLocation() - HiHatFactory->ActiveHiHatPool[0]->GetActorLocation();
 					hDistance = hDVector.Size();
 
-					if (hDistance >= 100)
+					//Exellent
+					if (hDistance > 0 && hDistance <= 100)
 					{
-						return;
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
+						// 액티브 풀에서는 빼버려
+						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
+						// 액설런트카운트에 1씩 더해
+						excellentCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
+					}
+					else if (hDistance > 100 && hDistance <= 200)
+					{
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
+						// 액티브 풀에서는 빼버려
+						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
+						// 그레이트카운트에 1씩 더해
+						greatCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
+					}
+					else if (hDistance > 200 && hDistance <= 300)
+					{
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
+						// 액티브 풀에서는 빼버려
+						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
+						// 얼리카운트에 1씩 더해
+						earlyCount += 1;
+
+						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
-						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
-						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
-						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
-
+						return;
 					}
 
 				}
@@ -586,88 +660,60 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 				}
 				else
 				{
-					FVector sDVector = SnareEnd->GetActorLocation()-SnareFactory->ActiveSnarePool[0]->GetActorLocation();
+					FVector sDVector = SnareEnd->GetActorLocation() - SnareFactory->ActiveSnarePool[0]->GetActorLocation();
 					sDistance = sDVector.Size();
 
-					if (sDistance >= 100)
+					//Exellent
+					if (sDistance > 0 && sDistance <= 100)
 					{
-						return;
-					}
-					else
-					{	
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
 						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
 						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
+						// 액티브 풀에서는 빼버려
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
+						// 액설런트카운트에 1씩 더해
+						excellentCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
-				}
-			}
-
-		}
-
-		AOSY_Drum_Ride* Ride = Cast<AOSY_Drum_Ride>(OtherActor);
-		if (Ride)
-		{
-			// 사운드를 재생한다.
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), RideSound, GetActorLocation());
-			// 햅틱이 가능하게 한다.
-			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
-
-			if (RideFactory != nullptr && RideEnd != nullptr)
-			{
-				if (RideFactory->ActiveRidePool.Num() <= 0)
-				{
-					return;
-				}
-				else
-				{
-					FVector rDVector = RideEnd->GetActorLocation()-RideFactory->ActiveRidePool[0]->GetActorLocation();
-					rDistance = rDVector.Size();
-
-					if (rDistance >= 100)
+					else if (sDistance > 100 && sDistance <= 200)
 					{
-						RideFactory->ActiveRidePool[0]->ActiveNode(FVector::ZeroVector, false);
-						RideFactory->RidePool.Add(RideFactory->ActiveRidePool[0]);
-						RideFactory->ActiveRidePool.RemoveAt(0);
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
+						// 액티브 풀에서는 빼버려
+						SnareFactory->ActiveSnarePool.RemoveAt(0);
+						// 그레이트카운트에 1씩 더해
+						greatCount += 1;
+						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
-				}
-			}
-		}
-
-		AOSY_Drum_TomKick* Tom = Cast<AOSY_Drum_TomKick>(OtherActor);
-		if (Tom)
-		{
-			// 사운드를 재생한다.
-			UGameplayStatics::PlaySoundAtLocation(GetWorld(), TomSound, GetActorLocation());
-			// 햅틱이 가능하게 한다.
-			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
-
-			if (TomFactory != nullptr && TomEnd != nullptr)
-			{
-				if (TomFactory->ActiveTomPool.Num() <= 0)
-				{
-					return;
-				}
-				else
-				{
-					FVector tDVector = TomEnd->GetActorLocation()-TomFactory->ActiveTomPool[0]->GetActorLocation();
-					tDistance = tDVector.Size();
-
-					if (tDistance >= 100)
+					else if (sDistance > 200 && sDistance <= 300)
 					{
-						return;
+						//액티브풀에 담긴 상태일테니까
+						// 활성화를 끈 다음에
+						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
+						// 그걸 풀에 넣고
+						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
+						// 액티브 풀에서는 빼버려
+						SnareFactory->ActiveSnarePool.RemoveAt(0);
+						// 얼리카운트에 1씩 더해
+						earlyCount += 1;
+
+						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
-						TomFactory->ActiveTomPool[0]->ActiveNode(FVector::ZeroVector, false);
-						TomFactory->TomPool.Add(TomFactory->ActiveTomPool[0]);
-						TomFactory->ActiveTomPool.RemoveAt(0);
+						return;
 					}
+
 				}
 			}
-			
+
 		}
 
-		
 	}
 }
 
