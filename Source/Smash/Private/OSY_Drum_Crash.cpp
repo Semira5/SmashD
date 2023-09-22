@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
+#include "SmashCharacter.h"
 
 // Sets default values
 AOSY_Drum_Crash::AOSY_Drum_Crash()
@@ -38,6 +39,10 @@ void AOSY_Drum_Crash::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_Drum_Crash::OnComponentBeginOverlap);
+
+	// Snare의 원래 크기를 OriginalScale에 저장합니다.
+	OriginalScale = compMesh->GetComponentScale();
 }
 
 // Called every frame
@@ -49,6 +54,17 @@ void AOSY_Drum_Crash::Tick(float DeltaTime)
 
 void AOSY_Drum_Crash::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	ASmashCharacter* Player = Cast<ASmashCharacter>(OtherActor);
 
+	FVector NewScale = FVector(1.1f, 1.1f, 1.0f);
+	compMesh->SetWorldScale3D(NewScale);
+
+	float TimeToResetSize = 0.5f;
+	GetWorldTimerManager().SetTimer(ResizeTimerHandle, this, &AOSY_Drum_Crash::ResetSize, TimeToResetSize, false);
+}
+
+void AOSY_Drum_Crash::ResetSize()
+{
+	compMesh->SetWorldScale3D(OriginalScale);
 }
 

@@ -54,10 +54,9 @@ void AOSY_Drum_Snare::Tick(float DeltaTime)
 
 void AOSY_Drum_Snare::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ASmashCharacter* Player = Cast<ASmashCharacter>(OtherActor);
-	//if (Player != nullptr)
+	    ASmashCharacter* Player = Cast<ASmashCharacter>(OtherActor);
 	
-		FVector NewScale = FVector(2.6f, 2.6f, 2.2f);
+		FVector NewScale = FVector(1.1f, 1.1f, 1.0f);
 		compMesh->SetWorldScale3D(NewScale);
 
 		float TimeToResetSize = 0.5f; 

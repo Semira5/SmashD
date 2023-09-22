@@ -32,7 +32,12 @@ public:
 	UPROPERTY(EditAnywhere,Category="MySettings")
 	class UStaticMeshComponent* compMesh;
 
+	FVector OriginalScale;
+	FTimerHandle ResizeTimerHandle;
+
 	UFUNCTION()
 	void OnComponentBeginOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UFUNCTION()
+	void ResetSize();
 };
