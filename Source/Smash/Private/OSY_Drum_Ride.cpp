@@ -52,3 +52,8 @@ void AOSY_Drum_Ride::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComp
 
 }
 
+void AOSY_Drum_Ride::ResetSize()
+{
+
+}
+
