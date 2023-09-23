@@ -43,7 +43,7 @@ void AOSY_Drum_TomKick::BeginPlay()
 	
 	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_Drum_TomKick::OnComponentBeginOverlap);
 
-	OriginalScale = compMesh->GetComponentScale();
+
 }
 
 // Called every frame
@@ -57,16 +57,21 @@ void AOSY_Drum_TomKick::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedC
 {
 	ASmashCharacter* Player = Cast<ASmashCharacter>(OtherActor);
 
+	// 현재 위치를 얻어옵니다.
+	FVector CurrentLocation = compMesh->GetComponentLocation();
 
-	FVector NewScale = FVector(1.1f, 1.1f, 1.0f);
-	compMesh->SetWorldScale3D(NewScale);
-	
+	// z 축 값만 10 만큼 뺍니다.
+	CurrentLocation.Z -= 10.0f;
+
+	// 위치를 변경합니다.
+	compMesh->SetWorldLocation(CurrentLocation);
+
 	float TimeToResetSize = 0.5f;
 	GetWorldTimerManager().SetTimer(ResizeTimerHandle, this, &AOSY_Drum_TomKick::ResetSize, TimeToResetSize, false);
 }
 
 void AOSY_Drum_TomKick::ResetSize()
 {
-	compMesh->SetWorldScale3D(OriginalScale);
+	compMesh->SetWorldLocation(OriginalLocation);
 }
 
