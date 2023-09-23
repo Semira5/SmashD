@@ -151,6 +151,7 @@ private:
 	UPROPERTY()
 	class AOSY_TomNodeEndActor* TomEnd;
 
+
 	float cDistance;
 	float hDistance;
 	float sDistance;
@@ -162,5 +163,5 @@ public:
 	int greatCount = 0;
 	int excellentCount = 0;
 
-	
+	bool CanPlayEffect = false;
 };
