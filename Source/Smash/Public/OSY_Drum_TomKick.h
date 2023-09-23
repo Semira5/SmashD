@@ -32,7 +32,7 @@ public:
 	UPROPERTY(EditAnywhere,Category="MySettings")
 	class UStaticMeshComponent* compMesh;
 
-	FVector OriginalScale;
+	FVector OriginalLocation;
 	FTimerHandle ResizeTimerHandle;
 
 	UFUNCTION()
