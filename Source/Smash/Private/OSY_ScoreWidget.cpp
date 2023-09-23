@@ -12,6 +12,7 @@ void UOSY_ScoreWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+
 	player = GetOwningPlayerPawn<ASmashCharacter>();
 	DZ = Cast<AOSY_NodeDestroyZone>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_NodeDestroyZone::StaticClass()));
 }
@@ -30,6 +31,7 @@ void UOSY_ScoreWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime
 		TotalScore = player->greatCount*1500 +player->excellentCount*4500;
 		text_TotalScore->SetText(FText::AsNumber(TotalScore));
 	}
+	SetImageByScore();
 }
 
 void UOSY_ScoreWidget::SetImageByScore()
@@ -37,29 +39,29 @@ void UOSY_ScoreWidget::SetImageByScore()
 
 	UTexture2D* NewImage = nullptr;
 
-	if (TotalScore >= 0 && TotalScore > 200000)
+	if (TotalScore >= 0 && TotalScore < 200000)
 	{
-		NewImage = LoadObject<UTexture2D>(nullptr, TEXT(""));
+		NewImage = LoadObject<UTexture2D>(nullptr, TEXT("/Script/Engine.Texture2D'/Game/BJH/RankImage/Bronze.Bronze'"));
 	}
-	else if (TotalScore >= 200000 && TotalScore > 300000)
+	else if (TotalScore >= 200000 && TotalScore < 300000)
 	{
-		NewImage = LoadObject<UTexture2D>(nullptr, TEXT(""));
+		NewImage = LoadObject<UTexture2D>(nullptr, TEXT("/Script/Engine.Texture2D'/Game/BJH/RankImage/Silver.Silver'"));
 	}
-	else if (TotalScore >= 300000 && TotalScore > 500000)
+	else if (TotalScore >= 300000 && TotalScore < 500000)
 	{
-		NewImage = LoadObject<UTexture2D>(nullptr, TEXT(""));
+		NewImage = LoadObject<UTexture2D>(nullptr, TEXT("/Script/Engine.Texture2D'/Game/BJH/RankImage/Silver.Silver'"));
 	}
-	else if (TotalScore >= 500000 && TotalScore > 700000)
+	else if (TotalScore >= 500000 && TotalScore < 700000)
 	{
-		NewImage = LoadObject<UTexture2D>(nullptr, TEXT(""));
+		NewImage = LoadObject<UTexture2D>(nullptr, TEXT("/Script/Engine.Texture2D'/Game/BJH/RankImage/Platinum.Platinum'"));
 	}
-	else if (TotalScore >= 700000 && TotalScore > 1000000)
+	else if (TotalScore >= 700000 && TotalScore < 1000000)
 	{
-		NewImage = LoadObject<UTexture2D>(nullptr, TEXT(""));
+		NewImage = LoadObject<UTexture2D>(nullptr, TEXT("/Script/Engine.Texture2D'/Game/BJH/RankImage/Dia.Dia'"));
 	}
 	else
 	{
-		NewImage = LoadObject<UTexture2D>(nullptr, TEXT(""));
+		NewImage = LoadObject<UTexture2D>(nullptr, TEXT("/Script/Engine.Texture2D'/Game/BJH/RankImage/Challenger.Challenger'"));
 	}
 
 	if (NewImage)

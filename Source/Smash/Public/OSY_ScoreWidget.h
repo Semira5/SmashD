@@ -51,9 +51,6 @@ public:
 	class UTextBlock* text_MissCount =0;
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = "UI")
-	TSubclassOf<class UImage> img_Rank;
-
-	UPROPERTY(VisibleAnywhere, meta = (BindWidget), Category = "UI")
 	class UImage* img_inst;
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
