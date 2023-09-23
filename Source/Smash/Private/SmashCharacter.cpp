@@ -34,6 +34,7 @@
 #include "OSY_SnareNodeEndActor.h"
 #include "OSY_RideNodeEndActor.h"
 #include "OSY_TomNodeEndActor.h"
+#include "SpawnEffect.h"
 
 // Sets default values
 ASmashCharacter::ASmashCharacter()
@@ -120,10 +121,6 @@ void ASmashCharacter::BeginPlay()
 	SnareEnd =Cast<AOSY_SnareNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_SnareNodeEndActor::StaticClass()));
 	RideEnd =Cast<AOSY_RideNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_RideNodeEndActor::StaticClass()));
 	TomEnd =Cast<AOSY_TomNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_TomNodeEndActor::StaticClass()));
-
-
-
-
 }
 
 // Called every frame
@@ -270,12 +267,15 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 {
 	if (bCanUseLeftStick)
 	{
-		//leftLog->SetText(FText::FromString("Collision!!"));
+	
 		APlayerController* pc = GetController<APlayerController>();
-
 		AOSY_Drum_Crash* Crash = Cast<AOSY_Drum_Crash>(OtherActor);
+		ASpawnEffect* SpawnEffectActor = Cast<ASpawnEffect>(UGameplayStatics::GetActorOfClass(GetWorld(), ASpawnEffect::StaticClass()));
 		if (Crash)
 		{
+		    //Effect 스폰
+			CanPlayEffect = true;
+			//SpawnEffectActor->CanPlayEffect = true;
 			// 사운드를 재생한다.
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), CrashSound, GetActorLocation());
 			// 햅틱이 가능하게 한다.
