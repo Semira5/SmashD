@@ -28,14 +28,7 @@ void ASpawnEffect::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (player != nullptr)
-	{
-		if (player->CanPlayEffect == true)
-		{
-			PlayEffect();
-			player->CanPlayEffect = false;
-		}
-	}
+
 
 }
 

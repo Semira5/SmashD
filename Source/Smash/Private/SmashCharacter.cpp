@@ -121,6 +121,8 @@ void ASmashCharacter::BeginPlay()
 	SnareEnd =Cast<AOSY_SnareNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_SnareNodeEndActor::StaticClass()));
 	RideEnd =Cast<AOSY_RideNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_RideNodeEndActor::StaticClass()));
 	TomEnd =Cast<AOSY_TomNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_TomNodeEndActor::StaticClass()));
+
+	ASpawnEffect* SpawnEffectActor = Cast<ASpawnEffect>(UGameplayStatics::GetActorOfClass(GetWorld(), ASpawnEffect::StaticClass()));
 }
 
 // Called every frame
@@ -271,10 +273,14 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 		APlayerController* pc = GetController<APlayerController>();
 		AOSY_Drum_Crash* Crash = Cast<AOSY_Drum_Crash>(OtherActor);
 		ASpawnEffect* SpawnEffectActor = Cast<ASpawnEffect>(UGameplayStatics::GetActorOfClass(GetWorld(), ASpawnEffect::StaticClass()));
+		
 		if (Crash)
 		{
-		    //Effect 스폰
-			CanPlayEffect = true;
+			if (SpawnEffectActor != nullptr)
+			{
+				SpawnEffectActor->PlayEffect();
+			}
+			
 			//SpawnEffectActor->CanPlayEffect = true;
 			// 사운드를 재생한다.
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), CrashSound, GetActorLocation());
@@ -356,6 +362,11 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
 
+			if (SpawnEffectActor != nullptr)
+			{
+				SpawnEffectActor->PlayEffect();
+			}
+
 			if (HiHatFactory != nullptr && HiHatEnd != nullptr)
 			{
 				if (HiHatFactory->ActiveHiHatPool.Num() <= 0)
@@ -425,6 +436,11 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), SnarSound, GetActorLocation());
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Left, 1.0f, false);
+
+			if (SpawnEffectActor != nullptr)
+			{
+				SpawnEffectActor->PlayEffect();
+			}
 
 			if (SnareFactory != nullptr && SnareEnd != nullptr)
 			{
@@ -498,10 +514,16 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 	{
 	    //rightLog->SetText(FText::FromString("Collision!!"));
 		APlayerController* pc = GetController<APlayerController>();
+		ASpawnEffect* SpawnEffectActor = Cast<ASpawnEffect>(UGameplayStatics::GetActorOfClass(GetWorld(), ASpawnEffect::StaticClass()));
 
 		AOSY_Drum_Crash* Crash = Cast<AOSY_Drum_Crash>(OtherActor);
 		if (Crash)
 		{
+
+			if (SpawnEffectActor != nullptr)
+			{
+				SpawnEffectActor->PlayEffect();
+			}
 			// 사운드를 재생한다.
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), CrashSound, GetActorLocation());
 			// 햅틱이 가능하게 한다.
@@ -582,6 +604,11 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
 
+			if (SpawnEffectActor != nullptr)
+			{
+				SpawnEffectActor->PlayEffect();
+			}
+
 			if (HiHatFactory != nullptr && HiHatEnd != nullptr)
 			{
 				if (HiHatFactory->ActiveHiHatPool.Num() <= 0)
@@ -651,6 +678,12 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), SnarSound, GetActorLocation());
 			// 햅틱이 가능하게 한다.
 			pc->PlayHapticEffect(smash_Haptic, EControllerHand::Right, 1.0f, false);
+
+
+			if (SpawnEffectActor != nullptr)
+			{
+				SpawnEffectActor->PlayEffect();
+			}
 
 			if (SnareFactory != nullptr && SnareEnd != nullptr)
 			{

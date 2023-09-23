@@ -23,6 +23,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY()
+	class ASmashCharacter* player;
+
 	// Æø¹ßÈ¿°ú
 	UPROPERTY(EditAnywhere,Category="MySettings")
 	class UParticleSystem* spark;
@@ -30,5 +33,4 @@ public:
 	UFUNCTION()
 	void PlayEffect();
 
-	class ASmashCharacter* player;
 };
