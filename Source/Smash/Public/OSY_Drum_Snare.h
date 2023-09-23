@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditAnywhere,Category="MySettings")
 	class UStaticMeshComponent* compMesh;
 
+// 	UPROPERTY(EditAnywhere,Category="MySettings")
+// 	class UNiagaraSystem* waterpark;
+
 	FVector OriginalScale; 
 	FTimerHandle ResizeTimerHandle; 
 

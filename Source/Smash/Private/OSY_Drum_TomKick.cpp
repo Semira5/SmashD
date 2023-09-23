@@ -33,7 +33,7 @@ AOSY_Drum_TomKick::AOSY_Drum_TomKick()
 		compMesh->SetStaticMesh(tempMesh.Object);
 	}
 
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -42,7 +42,6 @@ void AOSY_Drum_TomKick::BeginPlay()
 	Super::BeginPlay();
 	
 	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_Drum_TomKick::OnComponentBeginOverlap);
-
 
 }
 
@@ -55,23 +54,7 @@ void AOSY_Drum_TomKick::Tick(float DeltaTime)
 
 void AOSY_Drum_TomKick::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ASmashCharacter* Player = Cast<ASmashCharacter>(OtherActor);
 
-	// 현재 위치를 얻어옵니다.
-	FVector CurrentLocation = compMesh->GetComponentLocation();
-
-	// z 축 값만 10 만큼 뺍니다.
-	CurrentLocation.Z -= 10.0f;
-
-	// 위치를 변경합니다.
-	compMesh->SetWorldLocation(CurrentLocation);
-
-	float TimeToResetSize = 0.5f;
-	GetWorldTimerManager().SetTimer(ResizeTimerHandle, this, &AOSY_Drum_TomKick::ResetSize, TimeToResetSize, false);
 }
 
-void AOSY_Drum_TomKick::ResetSize()
-{
-	compMesh->SetWorldLocation(OriginalLocation);
-}
 

@@ -40,9 +40,6 @@ void AOSY_Drum_Ride::BeginPlay()
 	Super::BeginPlay();
 	
 	compBox->OnComponentBeginOverlap.AddDynamic(this, &AOSY_Drum_Ride::OnComponentBeginOverlap);
-
-	// Snare의 원래 크기를 OriginalScale에 저장합니다.
-	OriginalScale = compMesh->GetComponentScale();
 }
 
 // Called every frame
@@ -54,17 +51,7 @@ void AOSY_Drum_Ride::Tick(float DeltaTime)
 
 void AOSY_Drum_Ride::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ASmashCharacter* Player = Cast<ASmashCharacter>(OtherActor);
-
-	FVector NewScale = FVector(1.1f, 1.1f, 1.0f);
-	compMesh->SetWorldScale3D(NewScale);
-
-	float TimeToResetSize = 0.5f;
-	GetWorldTimerManager().SetTimer(ResizeTimerHandle, this, &AOSY_Drum_Ride::ResetSize, TimeToResetSize, false);
+	
 }
 
-void AOSY_Drum_Ride::ResetSize()
-{
-	compMesh->SetWorldScale3D(OriginalScale);
-}
 

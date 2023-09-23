@@ -6,6 +6,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
 #include "SmashCharacter.h"
+#include <Kismet/GameplayStatics.h>
+#include <../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
 
 // Sets default values
 AOSY_Drum_Snare::AOSY_Drum_Snare()
@@ -55,10 +57,13 @@ void AOSY_Drum_Snare::Tick(float DeltaTime)
 void AOSY_Drum_Snare::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	    ASmashCharacter* Player = Cast<ASmashCharacter>(OtherActor);
-	
-		FVector NewScale = FVector(1.1f, 1.1f, 1.0f);
-		compMesh->SetWorldScale3D(NewScale);
-
+//         if(waterpark)
+//             {
+// 		        UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), waterpark, GetActorLocation());
+// 		    }
+ 	   
+	    FVector NewScale = FVector(1.1f, 1.1f, 1.0f);
+	    compMesh->SetWorldScale3D(NewScale);
 		float TimeToResetSize = 0.5f; 
 		GetWorldTimerManager().SetTimer(ResizeTimerHandle, this, &AOSY_Drum_Snare::ResetSize, TimeToResetSize, false);
 }
