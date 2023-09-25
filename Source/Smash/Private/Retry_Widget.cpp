@@ -14,6 +14,6 @@ void URetry_Widget::NativeConstruct()
 
 void URetry_Widget::ReturnToFirst()
 {
-    //FString LevelName = TEXT("PlayMapFinal");
-    //UGameplayStatics::OpenLevel(this, FName(LevelName));
+    FString LevelName = TEXT("Level_BJH");
+    UGameplayStatics::OpenLevel(this, FName(LevelName));
 }
