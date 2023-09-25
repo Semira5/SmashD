@@ -62,7 +62,7 @@ void AOSY_Drum_Snare::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCom
 // 		        UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), waterpark, GetActorLocation());
 // 		    }
  	   
-	    FVector NewScale = FVector(1.1f, 1.1f, 1.0f);
+	    FVector NewScale = FVector(2.6f, 2.6f, 2.5f);
 	    compMesh->SetWorldScale3D(NewScale);
 		float TimeToResetSize = 0.5f; 
 		GetWorldTimerManager().SetTimer(ResizeTimerHandle, this, &AOSY_Drum_Snare::ResetSize, TimeToResetSize, false);

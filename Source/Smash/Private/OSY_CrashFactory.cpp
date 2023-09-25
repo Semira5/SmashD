@@ -5,6 +5,7 @@
 #include "OSY_CrashNodeActor.h"
 #include "OSY_Level.h"
 #include "Kismet/GameplayStatics.h"
+#include "Ingame_Widget.h"
 
 // Sets default values
 AOSY_CrashFactory::AOSY_CrashFactory()
@@ -32,6 +33,9 @@ void AOSY_CrashFactory::BeginPlay()
 		CrashPool.Add(CrashNode);
 	}
 
+
+
+
 }
 
 // Called every frame
@@ -39,19 +43,21 @@ void AOSY_CrashFactory::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (currentNodeIndex >= spawnTimes.Num())
-	{
-		return;
-	}
-	currentTime += DeltaTime;
 
-	float spawnTime = spawnTimes[currentNodeIndex];
-	// 만약 현재 시간이 spawnTime 이 됐다면
-	if (currentTime >= spawnTime)
-	{
-		PoolChangeCN();
-		currentNodeIndex++;
-	}
+			if (currentNodeIndex >= spawnTimes.Num())
+			{
+				return;
+			}
+			currentTime += DeltaTime;
+
+			float spawnTime = spawnTimes[currentNodeIndex];
+			// 만약 현재 시간이 spawnTime 이 됐다면
+			if (currentTime >= spawnTime)
+			{
+				PoolChangeCN();
+				currentNodeIndex++;
+			}
+
 
 }
 

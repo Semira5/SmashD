@@ -5,6 +5,8 @@
 #include "Components/Button.h"
 #include <Kismet/GameplayStatics.h>
 
+UIngame_Widget* UIngame_Widget::IngameWidget_inst = nullptr;
+
 void UIngame_Widget::NativeConstruct()
 {
     Super::NativeConstruct();
@@ -12,10 +14,16 @@ void UIngame_Widget::NativeConstruct()
     btn_PlayGame->OnClicked.AddDynamic(this, &UIngame_Widget::PlayGame);
     PlayAnimationForward(FadeOut);
     PlayAnimation(Gradation, 0.0f, 0);
+
+    if (!IngameWidget_inst)
+    {
+        IngameWidget_inst = this;
+    }
     
 }
 
 void UIngame_Widget::PlayGame()
 {
+    playtick = true;
    //UE_LOG(LogTemp, Warning, TEXT("StartGame!!"));
 }

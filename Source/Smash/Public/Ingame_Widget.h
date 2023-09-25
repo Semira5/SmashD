@@ -23,12 +23,19 @@ public:
 	UPROPERTY(VisibleAnywhere, Transient, meta = (BindWidgetAnim), Category = Menu)
 	class UWidgetAnimation* Gradation;
 
+    UFUNCTION()
+	void PlayGame();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool playtick= false;
+
+
+	static UIngame_Widget* IngameWidget_inst;
+
 protected:
 	virtual void NativeConstruct() override;
 
 private:
-    UFUNCTION()
-	void PlayGame();
 
 	
 };

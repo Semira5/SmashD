@@ -27,6 +27,9 @@ public:
 
 
 	UPROPERTY(EditAnywhere, Category="MySettings")
+	TSubclassOf<class UIngame_Widget> IngameWidget;
+
+	UPROPERTY(EditAnywhere, Category="MySettings")
 	TSubclassOf<class AOSY_CrashNodeActor> NodeFactory;
 
 	//----------------------------
