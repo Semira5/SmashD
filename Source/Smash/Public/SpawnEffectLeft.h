@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "SpawnEffect.generated.h"
+#include "SpawnEffectLeft.generated.h"
 
 UCLASS()
-class SMASH_API ASpawnEffect : public AActor
+class SMASH_API ASpawnEffectLeft : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ASpawnEffect();
+	ASpawnEffectLeft();
 
 protected:
 	// Called when the game starts or when spawned
@@ -22,7 +22,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 
 	UPROPERTY()
 	class ASmashCharacter* player;
@@ -33,5 +32,4 @@ public:
 
 	UFUNCTION()
 	void PlayEffect();
-
 };

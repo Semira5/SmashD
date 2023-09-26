@@ -29,7 +29,7 @@ void UStart_Widget::StartClassicMode()
         FTimerHandle DelayHandle;
         GetWorld()->GetTimerManager().SetTimer(DelayHandle, FTimerDelegate::CreateLambda([&]()
         {
-            FString LevelName = TEXT("SakuraPlay");
+            FString LevelName = TEXT("ChooseMap");
             UGameplayStatics::OpenLevel(this, FName(LevelName));
         }
     ), 2.0f, false);

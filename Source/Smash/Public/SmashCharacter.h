@@ -88,6 +88,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="MySettings|Inputs")
 	TArray<class UInputAction*> inputActions;
+	
 	//Áøµ¿(ÇÝÆ½)È¿°ú Ãß°¡
 	UPROPERTY(EditAnywhere, Category="MySettings")
 	class UHapticFeedbackEffect_Base* smash_Haptic;
@@ -110,6 +111,8 @@ private:
 	
 	void CanPlayingDrumsLeft();
 	void CanPlayingDrumsRight();
+
+	//void SpawnUI();
 
 	bool bRightTriggerDown = false;
 	bool bRightGripDown = false;
@@ -150,7 +153,6 @@ private:
 	class AOSY_RideNodeEndActor* RideEnd;
 	UPROPERTY()
 	class AOSY_TomNodeEndActor* TomEnd;
-
 
 	float cDistance;
 	float hDistance;

@@ -12,7 +12,6 @@ AOSY_HiHatFactory::AOSY_HiHatFactory()
 	PrimaryActorTick.bCanEverTick = true;
 
 	HiHatPoolSize = 20;
-
 }
 
 // Called when the game starts or when spawned

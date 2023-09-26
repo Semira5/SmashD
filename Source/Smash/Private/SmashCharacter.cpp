@@ -35,14 +35,14 @@
 #include "OSY_RideNodeEndActor.h"
 #include "OSY_TomNodeEndActor.h"
 #include "SpawnEffect.h"
+#include "A_Retry.h"
+#include <Engine/World.h>
 
 // Sets default values
 ASmashCharacter::ASmashCharacter()
 {
 
 	PrimaryActorTick.bCanEverTick = true;
-
-	bCanUseRightStick = true;
 
 	hmdCam = CreateDefaultSubobject<UCameraComponent>(TEXT("HMD Camera"));
 	hmdCam->SetupAttachment(RootComponent);
@@ -90,13 +90,14 @@ void ASmashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	bCanUseLeftStick = true;
+	bCanUseRightStick = true;
 	rightcomp->OnComponentBeginOverlap.AddDynamic(this, &ASmashCharacter::OnComponentRightBeginOverlap);
 	leftcomp->OnComponentBeginOverlap.AddDynamic(this, &ASmashCharacter::OnComponentLeftBeginOverlap);
 
 
 	//머리 장비 기준점 설정
-	UHeadMountedDisplayFunctionLibrary::SetTrackingOrigin(EHMDTrackingOrigin::Stage);
+	//UHeadMountedDisplayFunctionLibrary::SetTrackingOrigin(EHMDTrackingOrigin::Stage);
 
 	APlayerController* pc = GetController<APlayerController>();
 	if (pc != nullptr)
@@ -123,12 +124,24 @@ void ASmashCharacter::BeginPlay()
 	TomEnd =Cast<AOSY_TomNodeEndActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_TomNodeEndActor::StaticClass()));
 
 	ASpawnEffect* SpawnEffectActor = Cast<ASpawnEffect>(UGameplayStatics::GetActorOfClass(GetWorld(), ASpawnEffect::StaticClass()));
-}
+
+// 3초 후에 액터를 스폰하도록 타이머 설정
+// 	FTimerHandle TimerHandle;
+// 	float DelayInSeconds = 3.0f;
+// 
+// 	// 람다 함수로 타이머 설정
+// 	GetWorldTimerManager().SetTimer(TimerHandle, [this]() {
+// 	
+// 		SpawnUI();
+// 		}, DelayInSeconds, false);
+ }
 
 // Called every frame
 void ASmashCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	
 
 }
 
@@ -157,7 +170,6 @@ void ASmashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		widgetPointerComp->SetupPlayerInputComponent(enhancedInputComponent, inputActions);
 	}
 }
-
 
 
 void ASmashCharacter::RightTriggerDown()
@@ -194,7 +206,7 @@ void ASmashCharacter::RightADown()
 	//rightLog->SetText(FText::FromString("Right A Button Down!"));
 
 // 	사용자가 바라보고 있는 방향을 정면으로 다시 정렬(회전, 위치)
-// 		UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
+ 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
 
 void ASmashCharacter::RightAUp()
@@ -263,6 +275,35 @@ void ASmashCharacter::CanPlayingDrumsRight()
 
 	}
 }
+
+
+// void ASmashCharacter::SpawnUI()
+// {
+// 	// 월드를 가져옵니다.
+// 	UWorld* const World = GetWorld();
+// 
+// 	if (World)
+// 	{
+// 		// 스폰할 액터의 클래스를 지정합니다.
+// 		TSubclassOf<AA_Retry> ActorClassToSpawn = AA_Retry::StaticClass();
+// 
+// 		// 스폰할 위치와 회전을 설정합니다.
+// 		FVector SpawnLocation = FVector(1990.0f, 370.0f, 390.0f); // 원하는 위치로 설정
+// 		FRotator SpawnRotation = FRotator(0.0f, 0.0f, 0.0f); // 원하는 회전으로 설정
+// 
+// 		// 액터를 스폰하고 스폰된 액터의 포인터를 저장합니다.
+// 		AA_Retry* SpawnedActor = World->SpawnActor<AA_Retry>(ActorClassToSpawn, SpawnLocation, SpawnRotation);
+// 
+// 		if (SpawnedActor)
+// 		{
+// 			// 액터가 스폰되었습니다. 여기에서 추가적인 작업을 수행할 수 있습니다.
+// 		}
+// 		else
+// 		{
+// 			// 액터 스폰에 실패한 경우 처리할 내용을 여기에 추가합니다.
+// 		}
+// 	}
+// }
 
 //왼쪽 충돌 이벤트
 void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

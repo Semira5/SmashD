@@ -34,9 +34,14 @@ void ASpawnEffect::Tick(float DeltaTime)
 
 void ASpawnEffect::PlayEffect()
 {
- 
-	UE_LOG(LogTemp, Warning, TEXT("Effect!!!"));
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), spark, GetActorLocation());
+   
+    FVector ActorLocation = GetActorLocation();
+
+    FVector SpawnLocation1 = ActorLocation + FVector(0, 200, 0); 
+    FVector SpawnLocation2 = ActorLocation + FVector(0, -200, 0); 
+
+    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), spark, SpawnLocation1);
+    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), spark, SpawnLocation2);
 	
 }
 

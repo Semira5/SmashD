@@ -24,6 +24,7 @@ void UIngame_Widget::NativeConstruct()
 
 void UIngame_Widget::PlayGame()
 {
-    playtick = true;
-   //UE_LOG(LogTemp, Warning, TEXT("StartGame!!"));
+    FString LevelName = TEXT("SakuraPlay");
+    UGameplayStatics::OpenLevel(this, FName(LevelName));
+
 }
