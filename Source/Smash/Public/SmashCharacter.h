@@ -112,7 +112,6 @@ private:
 	void CanPlayingDrumsLeft();
 	void CanPlayingDrumsRight();
 
-	//void SpawnUI();
 
 	bool bRightTriggerDown = false;
 	bool bRightGripDown = false;

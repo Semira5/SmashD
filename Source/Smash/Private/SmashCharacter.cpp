@@ -277,33 +277,6 @@ void ASmashCharacter::CanPlayingDrumsRight()
 }
 
 
-// void ASmashCharacter::SpawnUI()
-// {
-// 	// 월드를 가져옵니다.
-// 	UWorld* const World = GetWorld();
-// 
-// 	if (World)
-// 	{
-// 		// 스폰할 액터의 클래스를 지정합니다.
-// 		TSubclassOf<AA_Retry> ActorClassToSpawn = AA_Retry::StaticClass();
-// 
-// 		// 스폰할 위치와 회전을 설정합니다.
-// 		FVector SpawnLocation = FVector(1990.0f, 370.0f, 390.0f); // 원하는 위치로 설정
-// 		FRotator SpawnRotation = FRotator(0.0f, 0.0f, 0.0f); // 원하는 회전으로 설정
-// 
-// 		// 액터를 스폰하고 스폰된 액터의 포인터를 저장합니다.
-// 		AA_Retry* SpawnedActor = World->SpawnActor<AA_Retry>(ActorClassToSpawn, SpawnLocation, SpawnRotation);
-// 
-// 		if (SpawnedActor)
-// 		{
-// 			// 액터가 스폰되었습니다. 여기에서 추가적인 작업을 수행할 수 있습니다.
-// 		}
-// 		else
-// 		{
-// 			// 액터 스폰에 실패한 경우 처리할 내용을 여기에 추가합니다.
-// 		}
-// 	}
-// }
 
 //왼쪽 충돌 이벤트
 void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
