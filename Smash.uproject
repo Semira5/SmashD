@@ -24,6 +24,10 @@
 				"Android",
 				"HoloLens"
 			]
+		},
+		{
+			"Name": "HDRIBackdrop",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
@@ -33,6 +37,7 @@
 		"WindowsNoEditor",
 		"Switch",
 		"XboxOne",
-		"XSX"
+		"XSX",
+		"HoloLens"
 	]
 }
