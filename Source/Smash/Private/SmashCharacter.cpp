@@ -317,7 +317,7 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 					cDistance = cDVector.Size();
 
 					//Exellent
-					if (cDistance > 0 && cDistance <= 100)
+					if (cDistance > 0 && cDistance <= 75)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -328,9 +328,8 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
 						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
-					else if (cDistance > 100 && cDistance <= 200)
+					else if (cDistance > 75 && cDistance <= 100)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -341,9 +340,8 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
 						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
-					else if (cDistance > 200 && cDistance <= 300)
+					else if (cDistance > 100 && cDistance <= 200)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -355,7 +353,7 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
-						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
+						//UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
@@ -393,7 +391,7 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 					hDistance = hDVector.Size();
 
 					//Exellent
-					if (hDistance > 0 && hDistance <= 100)
+					if (hDistance > 0 && hDistance <= 75)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -404,9 +402,8 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
 						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
-					else if (hDistance > 100 && hDistance <= 200)
+					else if (hDistance > 75 && hDistance <= 100)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -417,9 +414,8 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
 						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
-					else if(hDistance>200 && hDistance<=300)
+					else if(hDistance>100 && hDistance<=200)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -431,7 +427,6 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
-						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
@@ -468,7 +463,7 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 					sDistance = sDVector.Size();
 
 					//Exellent
-					if (sDistance > 0 && sDistance <= 100)
+					if (sDistance > 0 && sDistance <= 75)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -479,9 +474,9 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
 						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
+						//UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
-					else if (sDistance > 100 && sDistance <= 200)
+					else if (sDistance > 75 && sDistance <= 100)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -492,9 +487,9 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
 						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
+						//UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
-					else if (sDistance > 200 && sDistance <= 300)
+					else if (sDistance > 100 && sDistance <= 200)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -506,7 +501,6 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
-						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
@@ -559,7 +553,7 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 					cDistance = cDVector.Size();
 
 					//Exellent
-					if (cDistance > 0 && cDistance <= 100)
+					if (cDistance > 0 && cDistance <= 75)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -570,9 +564,8 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
 						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
-					else if (cDistance > 100 && cDistance <= 200)
+					else if (cDistance > 75 && cDistance <= 100)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -583,9 +576,8 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
 						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
-					else if (cDistance > 200 && cDistance <= 300)
+					else if (cDistance > 100 && cDistance <= 200)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -597,7 +589,6 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
-						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
@@ -635,7 +626,7 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 					hDistance = hDVector.Size();
 
 					//Exellent
-					if (hDistance > 0 && hDistance <= 100)
+					if (hDistance > 0 && hDistance <= 75)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -646,9 +637,9 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
 						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
+						//UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
-					else if (hDistance > 100 && hDistance <= 200)
+					else if (hDistance > 75 && hDistance <= 100)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -659,9 +650,9 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
 						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
+						//UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
-					else if (hDistance > 200 && hDistance <= 300)
+					else if (hDistance > 100 && hDistance <= 200)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -673,7 +664,7 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
-						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
+						//UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
@@ -711,7 +702,7 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 					sDistance = sDVector.Size();
 
 					//Exellent
-					if (sDistance > 0 && sDistance <= 100)
+					if (sDistance > 0 && sDistance <= 75)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -722,9 +713,9 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
 						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
+						//UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
-					else if (sDistance > 100 && sDistance <= 200)
+					else if (sDistance > 75 && sDistance <= 100)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -735,9 +726,9 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
 						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
-						UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
+						//UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
-					else if (sDistance > 200 && sDistance <= 300)
+					else if (sDistance > 100 && sDistance <= 200)
 					{
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
@@ -749,7 +740,7 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
-						UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
+						//UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{

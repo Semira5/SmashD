@@ -28,12 +28,12 @@ void AOSY_Level::Tick(float DeltaTime)
 
 	currentTime+= DeltaTime;
 	//2초가 되면 플레이해
-	////UE_LOG(LogTemp,Warning,TEXT("currentTime : %f"),currentTime);
+	//////UE_LOG(LogTemp,Warning,TEXT("currentTime : %f"),currentTime);
 	if (currentTime >= playSoundTime && currentTime - DeltaTime < playSoundTime)
 	{
 
 		//	playMusic();
-		////UE_LOG(LogTemp,Warning,TEXT("currentTime : %f"),currentTime);
+		//////UE_LOG(LogTemp,Warning,TEXT("currentTime : %f"),currentTime);
 		
 	}
 

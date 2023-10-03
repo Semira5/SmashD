@@ -42,7 +42,7 @@ void AOSY_RideFactory::Tick(float DeltaTime)
 		return;
 	}
 	currentTime += DeltaTime;
-	////UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
+	//////UE_LOG(LogTemp, Warning, TEXT("currentTime : %f"), currentTime);
 
 	float spawnTime = spawnTimes[currentNodeIndex];
 	// 만약 현재 시간이 spawnTime 이 됐다면

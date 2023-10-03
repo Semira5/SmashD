@@ -51,7 +51,7 @@ void AOSY_NodeDestroyZone::Tick(float DeltaTime)
 	current += DeltaTime;
 	if (isOverlap != true)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("current : %f"), current);
+		////UE_LOG(LogTemp, Warning, TEXT("current : %f"), current);
 		isOverlap = true;
 	}
 
