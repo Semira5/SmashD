@@ -14,6 +14,7 @@
 #include "OSY_HiHatFactory.h"
 #include "OSY_RideFactory.h"
 #include "OSY_TomFactory.h"
+#include "OSY_Miss.h"
 
 // Sets default values
 AOSY_NodeDestroyZone::AOSY_NodeDestroyZone()
@@ -39,6 +40,8 @@ void AOSY_NodeDestroyZone::BeginPlay()
 	SnareFactory = Cast<AOSY_SnareFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_SnareFactory::StaticClass()));
 	RideFactory = Cast<AOSY_RideFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_RideFactory::StaticClass()));
 	TomFactory = Cast<AOSY_TomFactory>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_TomFactory::StaticClass()));
+
+	missFac = Cast<AOSY_Miss>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_Miss::StaticClass()));
 	
 }
 
@@ -68,8 +71,10 @@ void AOSY_NodeDestroyZone::OnComponentBeginOverlap(UPrimitiveComponent* Overlapp
 
 	if (CN != nullptr)
 	{
-		//액티브풀에 담긴 상태일테니까
-		// 활성화를 끈 다음에
+		if (missFac != nullptr)
+		{
+			missFac->SpawnMiss();
+		}
 		CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
 		// 그걸 풀에 넣고
 		CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
@@ -83,8 +88,10 @@ void AOSY_NodeDestroyZone::OnComponentBeginOverlap(UPrimitiveComponent* Overlapp
 	
 	if (HN != nullptr)
 	{
-		//액티브풀에 담긴 상태일테니까
-		// 활성화를 끈 다음에
+		if (missFac != nullptr)
+		{
+			missFac->SpawnMiss();
+		}
 		HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
 		
 		// 그걸 풀에 넣고
@@ -97,6 +104,10 @@ void AOSY_NodeDestroyZone::OnComponentBeginOverlap(UPrimitiveComponent* Overlapp
 
 	if (SN != nullptr)
 	{
+		if (missFac != nullptr)
+		{
+			missFac->SpawnMiss();
+		}
 		SN->ActiveNode(GetActorLocation(), false);
 		if (SnareFactory != nullptr && SnareFactory->ActiveSnarePool.Num() <= 0)
 		{
@@ -115,6 +126,10 @@ void AOSY_NodeDestroyZone::OnComponentBeginOverlap(UPrimitiveComponent* Overlapp
 
 	if (RN != nullptr)
 	{
+		if (missFac != nullptr)
+		{
+			missFac->SpawnMiss();
+		}
 		RideFactory->ActiveRidePool[0]->ActiveNode(FVector::ZeroVector, false);
 		RideFactory->RidePool.Add(RideFactory->ActiveRidePool[0]);
 		RideFactory->ActiveRidePool.RemoveAt(0);
@@ -123,6 +138,10 @@ void AOSY_NodeDestroyZone::OnComponentBeginOverlap(UPrimitiveComponent* Overlapp
 
 	if (TN != nullptr)
 	{
+		if (missFac != nullptr)
+		{
+			missFac->SpawnMiss();
+		}
 		TomFactory->ActiveTomPool[0]->ActiveNode(FVector::ZeroVector, false);
 		TomFactory->TomPool.Add(TomFactory->ActiveTomPool[0]);
 		TomFactory->ActiveTomPool.RemoveAt(0);

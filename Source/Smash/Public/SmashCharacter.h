@@ -152,6 +152,16 @@ private:
 	class AOSY_RideNodeEndActor* RideEnd;
 	UPROPERTY()
 	class AOSY_TomNodeEndActor* TomEnd;
+	
+	UPROPERTY()
+	class AOSY_Miss* missFac;
+	UPROPERTY()
+	class AOSY_Excellent* excellentFac;
+	UPROPERTY()
+	class AOSY_Greate* greateFac;
+	UPROPERTY()
+	class AOSY_Early* earlyFac;
+
 
 	float cDistance;
 	float hDistance;

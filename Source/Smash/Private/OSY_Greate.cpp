@@ -1,33 +1,33 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "OSY_ScoreFactory.h"
+#include "OSY_Greate.h"
 
 // Sets default values
-AOSY_ScoreFactory::AOSY_ScoreFactory()
+AOSY_Greate::AOSY_Greate()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
-void AOSY_ScoreFactory::BeginPlay()
+void AOSY_Greate::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void AOSY_ScoreFactory::Tick(float DeltaTime)
+void AOSY_Greate::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	SpawnEarly();
+	
 }
 
-void AOSY_ScoreFactory::SpawnEarly()
+void AOSY_Greate::SpawnGreate()
 {
-	GetWorld()->SpawnActor<AOSY_Score>(ScoreFactory,GetActorLocation(),FRotator::ZeroRotator);
+	FActorSpawnParameters param;
+	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	GetWorld()->SpawnActor<AOSY_Score>(ScoreFactory, GetActorLocation(), FRotator::ZeroRotator, param);
 }
 

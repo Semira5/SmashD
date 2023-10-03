@@ -37,6 +37,11 @@
 #include "SpawnEffect.h"
 #include "A_Retry.h"
 #include <Engine/World.h>
+#include "OSY_ScoreFactory.h"
+#include "OSY_Early.h"
+#include "OSY_Greate.h"
+#include "OSY_Excellent.h"
+#include "OSY_Miss.h"
 
 // Sets default values
 ASmashCharacter::ASmashCharacter()
@@ -125,15 +130,16 @@ void ASmashCharacter::BeginPlay()
 
 	ASpawnEffect* SpawnEffectActor = Cast<ASpawnEffect>(UGameplayStatics::GetActorOfClass(GetWorld(), ASpawnEffect::StaticClass()));
 
-// 3초 후에 액터를 스폰하도록 타이머 설정
-// 	FTimerHandle TimerHandle;
-// 	float DelayInSeconds = 3.0f;
-// 
-// 	// 람다 함수로 타이머 설정
-// 	GetWorldTimerManager().SetTimer(TimerHandle, [this]() {
-// 	
-// 		SpawnUI();
-// 		}, DelayInSeconds, false);
+	missFac =Cast<AOSY_Miss>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_Miss::StaticClass()));
+	excellentFac =Cast<AOSY_Excellent>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_Excellent::StaticClass()));
+	greateFac =Cast<AOSY_Greate>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_Greate::StaticClass()));
+	earlyFac =Cast<AOSY_Early>(UGameplayStatics::GetActorOfClass(GetWorld(), AOSY_Early::StaticClass()));
+
+
+
+
+
+
  }
 
 // Called every frame
@@ -319,6 +325,11 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 					//Exellent
 					if (cDistance > 0 && cDistance <= 75)
 					{
+
+						if (excellentFac != nullptr)
+						{
+							excellentFac->SpawnExcellent();
+						}
 						//액티브풀에 담긴 상태일테니까
 						// 활성화를 끈 다음에
 						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
@@ -331,29 +342,27 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 					}
 					else if (cDistance > 75 && cDistance <= 100)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (greateFac != nullptr)
+						{
+							greateFac->SpawnGreate();
+						}
 						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
-						// 액티브 풀에서는 빼버려
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
-						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
 					}
 					else if (cDistance > 100 && cDistance <= 200)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+
+						if (earlyFac != nullptr)
+						{
+							earlyFac->SpawnEarly();
+						}
 						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
-						// 액티브 풀에서는 빼버려
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
-						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
-						//UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
@@ -393,38 +402,38 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 					//Exellent
 					if (hDistance > 0 && hDistance <= 75)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+
+						if (excellentFac != nullptr)
+						{
+							excellentFac->SpawnExcellent();
+						}
 						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
-						// 액티브 풀에서는 빼버려
 						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
-						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
 					}
 					else if (hDistance > 75 && hDistance <= 100)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+
+						if (greateFac != nullptr)
+						{
+							greateFac->SpawnGreate();
+						}
 						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
-						// 액티브 풀에서는 빼버려
 						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
-						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
 					}
 					else if(hDistance>100 && hDistance<=200)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+
+						if (earlyFac != nullptr)
+						{
+							earlyFac->SpawnEarly();
+						}
 						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
-						// 액티브 풀에서는 빼버려
 						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
-						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
 					}
@@ -465,40 +474,37 @@ void ASmashCharacter::OnComponentLeftBeginOverlap(class UPrimitiveComponent* Ove
 					//Exellent
 					if (sDistance > 0 && sDistance <= 75)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (excellentFac != nullptr)
+						{
+							excellentFac->SpawnExcellent();
+						}
+						
 						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
-						// 액티브 풀에서는 빼버려
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
-						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
-						//UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
 					else if (sDistance > 75 && sDistance <= 100)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+
+						if (greateFac != nullptr)
+						{
+							greateFac->SpawnGreate();
+						}
 						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
-						// 액티브 풀에서는 빼버려
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
-						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
-						//UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
 					else if (sDistance > 100 && sDistance <= 200)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (earlyFac != nullptr)
+						{
+							earlyFac->SpawnEarly();
+						}
 						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
-						// 액티브 풀에서는 빼버려
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
-						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
 					}
@@ -555,38 +561,35 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 					//Exellent
 					if (cDistance > 0 && cDistance <= 75)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (excellentFac != nullptr)
+						{
+							excellentFac->SpawnExcellent();
+						}
 						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
-						// 액티브 풀에서는 빼버려
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
-						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
 					}
 					else if (cDistance > 75 && cDistance <= 100)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (greateFac != nullptr)
+						{
+							greateFac->SpawnGreate();
+						}
 						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
-						// 액티브 풀에서는 빼버려
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
-						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
 					}
 					else if (cDistance > 100 && cDistance <= 200)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (earlyFac != nullptr)
+						{
+							earlyFac->SpawnEarly();
+						}
 						CrashFactory->ActiveCrashPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						CrashFactory->CrashPool.Add(CrashFactory->ActiveCrashPool[0]);
-						// 액티브 풀에서는 빼버려
 						CrashFactory->ActiveCrashPool.RemoveAt(0);
-						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
 					}
@@ -628,43 +631,37 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 					//Exellent
 					if (hDistance > 0 && hDistance <= 75)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (excellentFac != nullptr)
+						{
+							excellentFac->SpawnExcellent();
+						}
 						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
-						// 액티브 풀에서는 빼버려
 						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
-						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
-						//UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
 					else if (hDistance > 75 && hDistance <= 100)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (greateFac != nullptr)
+						{
+							greateFac->SpawnGreate();
+						}
 						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
-						// 액티브 풀에서는 빼버려
 						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
-						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
-						//UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
 					else if (hDistance > 100 && hDistance <= 200)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (earlyFac != nullptr)
+						{
+							earlyFac->SpawnEarly();
+						}
 						HiHatFactory->ActiveHiHatPool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						HiHatFactory->HiHatPool.Add(HiHatFactory->ActiveHiHatPool[0]);
-						// 액티브 풀에서는 빼버려
 						HiHatFactory->ActiveHiHatPool.RemoveAt(0);
-						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
-						//UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{
@@ -704,43 +701,37 @@ void ASmashCharacter::OnComponentRightBeginOverlap(class UPrimitiveComponent* Ov
 					//Exellent
 					if (sDistance > 0 && sDistance <= 75)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (excellentFac != nullptr)
+						{
+							excellentFac->SpawnExcellent();
+						}
 						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
-						// 액티브 풀에서는 빼버려
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
-						// 액설런트카운트에 1씩 더해
 						excellentCount += 1;
-						//UE_LOG(LogTemp, Warning, TEXT("excellentCount : %d"), excellentCount);
 					}
 					else if (sDistance > 75 && sDistance <= 100)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (greateFac != nullptr)
+						{
+							greateFac->SpawnGreate();
+						}
 						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
-						// 액티브 풀에서는 빼버려
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
-						// 그레이트카운트에 1씩 더해
 						greatCount += 1;
-						//UE_LOG(LogTemp, Warning, TEXT("greatCount : %d"), greatCount);
 					}
 					else if (sDistance > 100 && sDistance <= 200)
 					{
-						//액티브풀에 담긴 상태일테니까
-						// 활성화를 끈 다음에
+						if (earlyFac != nullptr)
+						{
+							earlyFac->SpawnEarly();
+						}
 						SnareFactory->ActiveSnarePool[0]->ActiveNode(FVector::ZeroVector, false);
-						// 그걸 풀에 넣고
 						SnareFactory->SnarePool.Add(SnareFactory->ActiveSnarePool[0]);
-						// 액티브 풀에서는 빼버려
 						SnareFactory->ActiveSnarePool.RemoveAt(0);
-						// 얼리카운트에 1씩 더해
 						earlyCount += 1;
 
-						//UE_LOG(LogTemp, Warning, TEXT("earlyCount : %d"), earlyCount);
 					}
 					else
 					{

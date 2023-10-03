@@ -49,4 +49,7 @@ public:
 	UPROPERTY()
 	class AOSY_TomFactory* TomFactory;
 
+	UPROPERTY()
+	class AOSY_Miss* missFac;
+
 };

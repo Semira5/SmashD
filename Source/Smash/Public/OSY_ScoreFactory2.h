@@ -4,17 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "OSY_Score.h"
-#include "OSY_ScoreFactory.generated.h"
+#include "OSY_ScoreFactory2.generated.h"
 
 UCLASS()
-class SMASH_API AOSY_ScoreFactory : public AActor
+class SMASH_API AOSY_ScoreFactory2 : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AOSY_ScoreFactory();
+	AOSY_ScoreFactory2();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,12 +23,4 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// 스네어 노드 클래스에 대한 참조
-	UPROPERTY(EditAnywhere, Category="MySettings")
-    TSubclassOf<AOSY_Score> ScoreFactory;
-
-
-	UFUNCTION()
-	void SpawnEarly();
-	
 };
